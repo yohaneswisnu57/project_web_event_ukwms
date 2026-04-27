@@ -27,25 +27,21 @@ class Invitation extends Model
     {
         static::creating(function (Invitation $invitation) {
             if (empty($invitation->unique_code)) {
-                $invitation->unique_code = self::generateUniqueCode($invitation->name);
+                $invitation->unique_code = self::generateUniqueCode();
             }
         });
     }
 
     /**
-     * Generate a unique code based on the name.
+     * Generate a unique random code of 7 characters.
      */
-    public static function generateUniqueCode(string $name): string
+    public static function generateUniqueCode(): string
     {
-        $slug = Str::slug(Str::limit($name, 20, ''));
-        $random = strtoupper(Str::random(6));
-
-        $code = $slug . '-' . $random;
+        $code = strtoupper(Str::random(7));
 
         // Ensure uniqueness
         while (self::where('unique_code', $code)->exists()) {
-            $random = strtoupper(Str::random(6));
-            $code = $slug . '-' . $random;
+            $code = strtoupper(Str::random(7));
         }
 
         return $code;

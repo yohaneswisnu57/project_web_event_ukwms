@@ -107,6 +107,12 @@ class InvitationResource extends Resource
                     ->falseLabel('Belum Mendaftar'),
             ])
             ->headerActions([
+                Action::make('downloadTemplate')
+                    ->label('Download Template')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('info')
+                    ->url(route('invitations.template'))
+                    ->openUrlInNewTab(),
                 ExportAction::make()
                     ->exporter(InvitationExporter::class),
                 ImportAction::make()

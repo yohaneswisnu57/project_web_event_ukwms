@@ -31,6 +31,13 @@ class RegistrationsTable
                 \Filament\Tables\Columns\TextColumn::make('phone')
                     ->label('Nomor HP'),
                 
+                \Filament\Tables\Columns\TextColumn::make('checked_in_at')
+                    ->label('Waktu Check-in')
+                    ->dateTime('d M Y H:i')
+                    ->sortable()
+                    ->placeholder('Belum Hadir')
+                    ->color('success'),
+                
                 \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Daftar')
                     ->dateTime('d M Y H:i')
