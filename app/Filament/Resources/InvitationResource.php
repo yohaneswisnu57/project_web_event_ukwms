@@ -17,6 +17,11 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ImportAction;
+use Filament\Actions\ExportBulkAction;
+use App\Filament\Exports\InvitationExporter;
+use App\Filament\Imports\InvitationImporter;
 use Filament\Notifications\Notification;
 
 class InvitationResource extends Resource
@@ -101,27 +106,35 @@ class InvitationResource extends Resource
                     ->trueLabel('Sudah Mendaftar')
                     ->falseLabel('Belum Mendaftar'),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(InvitationExporter::class),
+                ImportAction::make()
+                    ->importer(InvitationImporter::class),
+            ])
             ->actions([
                 Action::make('copyLink')
                     ->label('Copy Link')
                     ->icon('heroicon-o-clipboard')
                     ->color('info')
+                    ->extraAttributes(fn (Invitation $record) => [
+                        'x-on:click' => "window.isSecureContext ? navigator.clipboard.writeText('" . $record->registration_link . "') : alert('Gagal menyalin: Browser membutuhkan HTTPS untuk fitur copy clipboard. Silakan salin link secara manual.')",
+                    ])
                     ->action(function (Invitation $record) {
                         Notification::make()
-                            ->title('Link disalin!')
-                            ->body($record->registration_link)
+                            ->title('Proses Salin Selesai')
+                            ->body('Jika Anda menggunakan HTTPS, link sudah tersimpan di clipboard.')
                             ->success()
                             ->send();
-                    })
-                    ->extraAttributes(fn (Invitation $record) => [
-                        'x-on:click' => "navigator.clipboard.writeText('" . $record->registration_link . "')",
-                    ]),
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(InvitationExporter::class),
                     DeleteBulkAction::make(),
                 ]),
             ]);

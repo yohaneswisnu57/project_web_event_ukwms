@@ -35,61 +35,70 @@
             <form wire:submit="submit">
                 <div class="form-group {{ $errors->has('attendance_count') ? 'has-error' : '' }}">
                     <label for="attendance_count">Jumlah yang Hadir</label>
-                    <input
-                        type="number"
-                        id="attendance_count"
-                        wire:model="attendance_count"
-                        placeholder="Masukkan jumlah orang"
-                        min="1"
-                        max="50"
-                    >
+                    <select id="attendance_count" wire:model.live="attendance_count">
+                        @for($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Orang</option>
+                        @endfor
+                    </select>
                     @error('attendance_count')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                    <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        wire:model="email"
-                        placeholder="contoh@email.com"
-                    >
-                    @error('email')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="attendees-list">
+                    @foreach($attendees as $index => $attendee)
+                        <div class="attendee-section" wire:key="attendee-{{ $index }}" style="margin-top: 1.5rem;">
+                            <div class="section-title">
+                                <span>Tamu #{{ $index + 1 }}</span>
+                                @if($index === 0)
+                                    <span class="main-badge">Utama</span>
+                                @endif
+                            </div>
+                            
+                            <div class="form-group {{ $errors->has('attendees.'.$index.'.name') ? 'has-error' : '' }}">
+                                <label>Nama Lengkap</label>
+                                <input type="text" wire:model="attendees.{{ $index }}.name" placeholder="Nama lengkap tamu">
+                                @error('attendees.'.$index.'.name')
+                                    <div class="error-message">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                <div class="form-group {{ $errors->has('phone') ? 'has-error' : '' }}">
-                    <label for="phone">Nomor Handphone</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        wire:model="phone"
-                        placeholder="08xxxxxxxxxx"
-                    >
-                    @error('phone')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+                            <div class="grid-2">
+                                <div class="form-group {{ $errors->has('attendees.'.$index.'.email') ? 'has-error' : '' }}">
+                                    <label>Email</label>
+                                    <input type="email" wire:model="attendees.{{ $index }}.email" placeholder="email@contoh.com">
+                                    @error('attendees.'.$index.'.email')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                <div class="form-group {{ $errors->has('position') ? 'has-error' : '' }}">
-                    <label for="position">Jabatan di Perusahaan</label>
-                    <input
-                        type="text"
-                        id="position"
-                        wire:model="position"
-                        placeholder="Contoh: Manager, Direktur, Staff"
-                    >
-                    @error('position')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+                                <div class="form-group {{ $errors->has('attendees.'.$index.'.phone') ? 'has-error' : '' }}">
+                                    <label>Nomor HP</label>
+                                    <input type="tel" wire:model="attendees.{{ $index }}.phone" placeholder="08xxxxxxxx">
+                                    @error('attendees.'.$index.'.phone')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('attendees.'.$index.'.position') ? 'has-error' : '' }}">
+                                <label>Jabatan</label>
+                                <input type="text" wire:model="attendees.{{ $index }}.position" placeholder="Contoh: Manager, Direktur">
+                                @error('attendees.'.$index.'.position')
+                                    <div class="error-message">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            @if(!$loop->last)
+                                <div class="divider"></div>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
 
                 <button type="submit" class="btn-submit" wire:loading.attr="disabled">
                     <span wire:loading wire:target="submit" class="spinner"></span>
-                    <span wire:loading.remove wire:target="submit">Daftar Sekarang</span>
+                    <span wire:loading.remove wire:target="submit">Konfirmasi Kehadiran</span>
                     <span wire:loading wire:target="submit">Memproses...</span>
                 </button>
             </form>

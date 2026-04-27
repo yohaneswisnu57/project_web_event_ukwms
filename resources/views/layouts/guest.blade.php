@@ -283,7 +283,32 @@
             font-size: 0.95rem;
         }
 
-        /* Responsive */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-badge {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+        }
+
         @media (max-width: 480px) {
             .card {
                 padding: 1.75rem;
@@ -292,6 +317,11 @@
 
             .card-header h1 {
                 font-size: 1.4rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0;
             }
         }
     </style>
