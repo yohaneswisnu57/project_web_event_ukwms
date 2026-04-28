@@ -27,8 +27,6 @@ Silakan simpan **Invitation QR Code** di bawah ini untuk ditunjukkan kepada pani
 Kunjungi Website Event
 </x-mail::button>
 
-Sampai jumpa di lokasi acara!
-
 Terima kasih,<br>
 Panitia WIMATES LEADERS TALK
 </x-mail::message>
