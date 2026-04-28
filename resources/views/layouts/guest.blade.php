@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Event - UKWMS</title>
-    <meta name="description" content="Form pendaftaran kehadiran event UKWMS">
+    <title>Event UKWMS</title>
+    <meta name="description" content="Official Event Page UKWMS">
+    <link rel="icon" type="image/x-icon" href="https://www.ukwms.ac.id/favicon.ico">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     @livewireStyles
@@ -16,27 +17,38 @@
     <style>
         [x-cloak] { display: none !important; }
         
-        /* Custom scrollbar for better aesthetics */
+        :root {
+            --ukwms-yellow: #FAC43A;
+            --ukwms-yellow-hover: #e5b334;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+        
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f0c29;
+            background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-            background: #302b63;
+            background: #cbd5e1;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #2563eb;
+            background: var(--ukwms-yellow);
         }
     </style>
 </head>
-<body class="antialiased min-h-screen flex items-center justify-center p-4 text-slate-200" 
-      style="background: radial-gradient(circle at top left, #1e3a8a 0%, #0f172a 100%);">
+<body class="antialiased min-h-screen text-slate-800 bg-[#f8fafc]">
     
-    <div class="w-full max-w-lg">
-        {{ $slot }}
+    <div class="w-full">
+        @isset($slot)
+            {{ $slot }}
+        @else
+            @yield('content')
+        @endisset
     </div>
 
     @livewireScripts

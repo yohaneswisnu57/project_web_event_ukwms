@@ -13,24 +13,24 @@ class InvitationStats extends StatsOverviewWidget
     {
         return [
             Stat::make('Total Undangan', \App\Models\Invitation::count())
-                ->description('Seluruh data undangan')
+                ->description('Total instansi yang diundang')
                 ->descriptionIcon('heroicon-m-envelope')
                 ->color('info'),
                 
-            Stat::make('Sudah Registrasi', \App\Models\Invitation::where('is_used', true)->count())
-                ->description('Tamu yang sudah konfirmasi')
+            Stat::make('Instansi Terdaftar', \App\Models\Registration::count())
+                ->description('Instansi yang sudah mengisi form')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
                 
-            Stat::make('Belum Registrasi', \App\Models\Invitation::where('is_used', false)->count())
-                ->description('Menunggu konfirmasi')
-                ->descriptionIcon('heroicon-m-clock')
-                ->color('warning'),
-
-            Stat::make('Total Tamu Hadir', \App\Models\Registration::sum('attendance_count'))
-                ->description('Akumulasi jumlah orang')
+            Stat::make('Total Orang Terdaftar', \App\Models\Registration::sum('attendance_count'))
+                ->description('Total pendaftar')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
+
+            Stat::make('Tamu Sudah Hadir', \App\Models\Registration::whereNotNull('checked_in_at')->sum('attendance_count'))
+                ->description('Jumlah orang yang sudah scan QR')
+                ->descriptionIcon('heroicon-m-user-group')
+                ->color('warning'),
         ];
     }
 }

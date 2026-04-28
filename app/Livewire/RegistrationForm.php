@@ -15,7 +15,14 @@ class RegistrationForm extends Component
 
     // Form fields
     public int $attendance_count = 1;
-    public array $attendees = [];
+    public array $attendees = [
+        [
+            'name' => '',
+            'email' => '',
+            'phone' => '',
+            'position' => '',
+        ]
+    ];
 
     // State
     public bool $submitted = false;
@@ -30,34 +37,11 @@ class RegistrationForm extends Component
             $this->submitted = true;
             $this->latestRegistration = Registration::where('invitation_id', $this->invitation->id)->first();
         }
-
-        $this->initializeAttendees();
-    }
-
-    public function updatedAttendanceCount($value)
-    {
-        $this->initializeAttendees();
     }
 
     protected function initializeAttendees()
     {
-        $count = max(1, min(10, $this->attendance_count)); // Limit to 10 for UI
-        
-        // If decreasing, keep the existing data
-        if (count($this->attendees) > $count) {
-            $this->attendees = array_slice($this->attendees, 0, $count);
-        } 
-        // If increasing, add new empty entries
-        elseif (count($this->attendees) < $count) {
-            for ($i = count($this->attendees); $i < $count; $i++) {
-                $this->attendees[] = [
-                    'name' => '',
-                    'email' => '',
-                    'phone' => '',
-                    'position' => '',
-                ];
-            }
-        }
+        // No longer needed as we only support 1 attendee
     }
 
     protected function rules(): array
@@ -124,12 +108,6 @@ class RegistrationForm extends Component
 
         // Mark invitation as used
         $this->invitation->update(['is_used' => true]);
-
-        // Send confirmation email to the primary attendee
-        if (!empty($this->attendees[0]['email'])) {
-            \Illuminate\Support\Facades\Mail::to($this->attendees[0]['email'])
-                ->send(new \App\Mail\RegistrationConfirmedMail($this->latestRegistration));
-        }
 
         $this->submitted = true;
     }

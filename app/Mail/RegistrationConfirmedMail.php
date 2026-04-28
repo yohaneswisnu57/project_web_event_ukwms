@@ -36,8 +36,16 @@ class RegistrationConfirmedMail extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
+        $qrCode = (string) \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+            ->size(200)
+            ->margin(1)
+            ->generate($this->registration->uuid);
+
         return new Content(
             markdown: 'emails.registration-confirmed',
+            with: [
+                'qrCode' => $qrCode,
+            ],
         );
     }
 

@@ -1,164 +1,151 @@
-<div>
-    @if($submitted && $invitation->is_used && !$invitation->wasRecentlyCreated)
-        {{-- Already registered before visiting this page --}}
-        <div class="bg-white/5 backdrop-blur-xl border border-white/20 rounded-[2rem] p-10 shadow-2xl text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                </svg>
-            </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Sudah Terdaftar</h2>
-            <p class="text-slate-400 leading-relaxed mb-8">Undangan atas nama <strong class="text-slate-200">{{ $invitation->name }}</strong> sudah digunakan untuk mendaftar sebelumnya.</p>
-            
-            {{-- QR Code Section --}}
-            @if($latestRegistration)
-                <div class="bg-white p-4 rounded-3xl inline-block mb-6 shadow-2xl border-4 border-blue-500/20">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('admin.check-in', $latestRegistration->id)) }}" 
-                         alt="QR Code Check-in" 
-                         class="w-48 h-48 sm:w-56 sm:h-56">
+<div class="space-y-0 text-slate-800">
+    @if($submitted)
+        {{-- Success State --}}
+        <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-[#FAC43A]/20 animate-in fade-in zoom-in duration-700">
+                <div class="w-24 h-24 bg-[#FAC43A] rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-lg shadow-[#FAC43A]/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
                 </div>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Gunakan QR Code Ini Untuk Check-in</p>
-            @endif
-        </div>
-    @elseif($submitted)
-        {{-- Just submitted successfully --}}
-        <div class="bg-white/5 backdrop-blur-xl border border-white/20 rounded-[2rem] p-10 shadow-2xl text-center animate-in fade-in zoom-in duration-700">
-            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-            </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Pendaftaran Berhasil!</h2>
-            <p class="text-slate-400 leading-relaxed mb-8">Terima kasih, <strong class="text-slate-200">{{ $invitation->name }}</strong>.<br>Data kehadiran Anda telah kami terima.</p>
-            
-            {{-- QR Code Section --}}
-            @if($latestRegistration)
-                <div class="bg-white p-4 rounded-3xl inline-block mb-6 shadow-2xl shadow-emerald-500/10 border-4 border-emerald-500/20">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('admin.check-in', $latestRegistration->id)) }}" 
-                         alt="QR Code Check-in" 
-                         class="w-48 h-48 sm:w-56 sm:h-56">
-                </div>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Silakan Simpan/Screenshot QR Code Ini<br>Untuk Check-in di Lokasi Acara</p>
-            @endif
-        </div>
-    @else
-        {{-- Registration Form --}}
-        <div class="bg-white/5 backdrop-blur-xl border border-white/20 rounded-[2rem] p-8 sm:p-10 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div class="text-center mb-8">
-                <div class="inline-block bg-gradient-to-br from-blue-400 to-blue-600 text-white px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-[0.15em] mb-4 shadow-lg shadow-blue-500/20">
-                    Event UKWMS
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-br from-white to-blue-200 bg-clip-text text-transparent leading-tight">
-                    Konfirmasi Kehadiran
-                </h1>
-                <p class="text-slate-400 mt-2 font-medium">{{ $invitation->name }}</p>
-            </div>
-
-            <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-8"></div>
-
-            <form wire:submit="submit" class="space-y-6">
-                {{-- Attendance Count --}}
-                <div class="space-y-2">
-                    <label class="block text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest ml-1">Jumlah yang Hadir</label>
-                    <div class="relative group">
-                        <select wire:model.live="attendance_count" 
-                            class="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-2xl text-white text-base appearance-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all cursor-pointer group-hover:bg-white/[0.08]">
-                            @for($i = 1; $i <= 10; $i++)
-                                <option value="{{ $i }}" class="bg-[#0f172a] text-white">{{ $i }} Orang</option>
-                            @endfor
-                        </select>
-                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                            </svg>
+                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Registrasi Berhasil!</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Terima kasih atas konfirmasi kehadiran Anda. Kami telah mengirimkan detail pendaftaran ke email Anda.</p>
+                
+                <div class="bg-slate-50 border border-slate-100 rounded-3xl p-8 mb-8 text-left">
+                    <div class="space-y-4">
+                        <div class="flex justify-between border-b border-slate-200 pb-2">
+                            <span class="text-slate-400 text-sm uppercase font-bold tracking-widest">ID Registrasi</span>
+                            <span class="font-black text-slate-900">#{{ $latestRegistration->id ?? '---' }}</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-200 pb-2">
+                            <span class="text-slate-400 text-sm uppercase font-bold tracking-widest">Nama Tamu</span>
+                            <span class="font-black text-slate-900">{{ $latestRegistration->attendees->first()->name ?? '---' }}</span>
                         </div>
                     </div>
-                    @error('attendance_count')
-                        <div class="text-rose-400 text-[0.75rem] mt-1.5 flex items-center gap-1 ml-1">
-                            <span class="text-sm">⚠</span> {{ $message }}
-                        </div>
-                    @enderror
                 </div>
 
-                {{-- Attendees List --}}
-                <div class="space-y-8 pt-2">
-                    @foreach($attendees as $index => $attendee)
-                        <div wire:key="attendee-{{ $index }}" class="space-y-5 animate-in fade-in duration-500">
-                            <div class="flex items-center justify-between ml-1">
-                                <span class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">Tamu #{{ $index + 1 }}</span>
-                                @if($index === 0)
-                                    <span class="bg-blue-500/10 text-blue-400 text-[0.6rem] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-blue-500/20">Pendaftar Utama</span>
-                                @endif
-                            </div>
-                            
-                            {{-- Name --}}
-                            <div class="space-y-2">
-                                <label class="block text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest ml-1">Nama Lengkap</label>
-                                <input type="text" wire:model="attendees.{{ $index }}.name" placeholder="Masukkan nama lengkap"
-                                    class="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                                @error('attendees.'.$index.'.name')
-                                    <div class="text-rose-400 text-[0.75rem] mt-1 flex items-center gap-1 ml-1">
-                                        <span class="text-sm">⚠</span> {{ $message }}
-                                    </div>
-                                @enderror
+                <a href="{{ url('/') }}" class="inline-block px-10 py-5 bg-[#FAC43A] text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-[#e5b334] transition-all shadow-lg shadow-[#FAC43A]/30">
+                    Kembali ke Beranda
+                </a>
+            </div>
+        </section>
+    @else
+        {{-- Landing Page + Form --}}
+        
+        {{-- Section 1: Hero --}}
+        <section class="relative bg-white pt-16 md:pt-0" 
+                 x-data="{ 
+                    active: 0,
+                    images: [
+                        '/images/hero-banner.webp'
+                    ]
+                 }">
+            
+            {{-- Hero Background / Image Container --}}
+            <div class="relative w-full overflow-hidden">
+                <template x-for="(image, index) in images" :key="index">
+                    <div x-show="active === index" 
+                         x-transition:enter="transition ease-out duration-1000"
+                         x-transition:enter-start="opacity-0 scale-105"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         class="w-full">
+                        <img :src="image" class="w-full h-auto object-contain">
+                    </div>
+                </template>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/20"></div>
+            </div>
+
+            <div class="container mx-auto px-6 relative z-10 text-center py-8 md:py-16">
+                <h1 class="text-3xl md:text-6xl font-black text-slate-900 leading-tight tracking-tighter mb-8 drop-shadow-sm">
+                    SELAMAT DATANG<br><span class="text-[#FAC43A]">{{ Str::upper($invitation->name) }}</span>
+                </h1>
+                
+
+                <a href="#register" class="px-12 py-5 bg-[#FAC43A] text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e5b334] transition-all shadow-xl shadow-[#FAC43A]/30 w-full sm:w-auto inline-block">
+                    Konfirmasi Kehadiran
+                </a>
+            </div>
+        </section>
+
+        {{-- Section 2: Registration Form --}}
+        <section id="register" class="py-32 bg-slate-50 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white rounded-[3rem] shadow-xl overflow-hidden border border-slate-100">
+                        <div class="p-12 md:p-16">
+                            <div class="text-center mb-12">
+                                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Formulir Kehadiran</h2>
+                                <i style="color: red;">*Undangan hanya berlaku untuk 1 orang*</i>
+                                <p class="text-slate-500">Mohon lengkapi data diri Anda di bawah ini.</p>
+                                <div class="w-12 h-1 bg-[#FAC43A] mx-auto rounded-full mt-4"></div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                {{-- Email --}}
-                                <div class="space-y-2">
-                                    <label class="block text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest ml-1">Email</label>
-                                    <input type="email" wire:model="attendees.{{ $index }}.email" placeholder="email@contoh.com"
-                                        class="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                                    @error('attendees.'.$index.'.email')
-                                        <div class="text-rose-400 text-[0.75rem] mt-1 flex items-center gap-1 ml-1">
-                                            <span class="text-sm">⚠</span> {{ $message }}
+                            <form wire:submit.prevent="submit" class="space-y-8">
+                                {{-- Primary Attendee Details --}}
+                                <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div class="space-y-2">
+                                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Nama Lengkap</label>
+                                            <input type="text" wire:model="attendees.0.name" 
+                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   placeholder="Masukkan nama lengkap...">
+                                            @error('attendees.0.name') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                                         </div>
-                                    @enderror
+                                        <div class="space-y-2">
+                                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Email</label>
+                                            <input type="email" wire:model="attendees.0.email" 
+                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   placeholder="email@example.com">
+                                            @error('attendees.0.email') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Nomor WhatsApp</label>
+                                            <input type="text" wire:model="attendees.0.phone" 
+                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   placeholder="081234567890">
+                                            @error('attendees.0.phone') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Jabatan / Instansi</label>
+                                            <input type="text" wire:model="attendees.0.position" 
+                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   placeholder="Contoh: CEO di PT Maju Mundur">
+                                            @error('attendees.0.position') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {{-- Phone --}}
-                                <div class="space-y-2">
-                                    <label class="block text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest ml-1">Nomor HP</label>
-                                    <input type="tel" wire:model="attendees.{{ $index }}.phone" placeholder="08xxxxxxxx"
-                                        class="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                                    @error('attendees.'.$index.'.phone')
-                                        <div class="text-rose-400 text-[0.75rem] mt-1 flex items-center gap-1 ml-1">
-                                            <span class="text-sm">⚠</span> {{ $message }}
-                                        </div>
-                                    @enderror
+                                <div class="flex flex-col items-center pt-8">
+                                    <button type="submit" wire:loading.attr="disabled"
+                                            class="w-full md:w-auto px-16 py-6 bg-[#FAC43A] text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e5b334] transition-all shadow-xl shadow-[#FAC43A]/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <span wire:loading.remove>Konfirmasi Kehadiran</span>
+                                        <span wire:loading>Memproses...</span>
+                                    </button>
+                                    <p class="text-slate-400 text-xs mt-6 font-bold uppercase tracking-widest italic">
+                                        * Dengan mengklik tombol di atas, Anda menyatakan bersedia hadir dalam acara.
+                                    </p>
                                 </div>
-                            </div>
-
-                            {{-- Position --}}
-                            <div class="space-y-2">
-                                <label class="block text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest ml-1">Jabatan</label>
-                                <input type="text" wire:model="attendees.{{ $index }}.position" placeholder="Contoh: Manager, Direktur"
-                                    class="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all">
-                                @error('attendees.'.$index.'.position')
-                                    <div class="text-rose-400 text-[0.75rem] mt-1 flex items-center gap-1 ml-1">
-                                        <span class="text-sm">⚠</span> {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            @if(!$loop->last)
-                                <div class="h-px bg-white/5 mt-8"></div>
-                            @endif
+                            </form>
                         </div>
-                    @endforeach
+                    </div>
                 </div>
+            </div>
+        </section>        
 
-                <div class="pt-4">
-                    <button type="submit" class="w-full group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 p-4 rounded-2xl text-white font-bold uppercase tracking-wider hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none" 
-                        wire:loading.attr="disabled">
-                        <div class="flex items-center justify-center gap-3">
-                            <div wire:loading wire:target="submit" class="w-5 h-5 border-2 border-slate-900/30 border-t-slate-900 rounded-full animate-spin"></div>
-                            <span wire:loading.remove wire:target="submit">Konfirmasi Kehadiran</span>
-                            <span wire:loading wire:target="submit">Memproses...</span>
-                        </div>
-                    </button>
-                </div>
-            </form>
-        </div>
+        {{-- Footer --}}
+        <footer class="py-12 bg-slate-50 border-t border-slate-200 text-center">
+            <p class="text-[0.7rem] text-slate-400 uppercase tracking-widest font-bold">&copy; 2026 Universitas Katolik Widya Mandala Surabaya. All Rights Reserved.</p>
+        </footer>
     @endif
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </div>

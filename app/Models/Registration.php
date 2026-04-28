@@ -11,12 +11,38 @@ class Registration extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'uuid',
         'invitation_id',
         'attendance_count',
         'email',
         'phone',
         'position',
+        'validated_at',
+        'checked_in_at',
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function ($registration) {
+            $registration->uuid = (string) \Illuminate\Support\Str::uuid();
+        });
+    }
+
+    protected $casts = [
+        'validated_at' => 'datetime',
+        'checked_in_at' => 'datetime',
+    ];
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 
     /**
      * Get the invitation that owns this registration.
