@@ -28,12 +28,12 @@
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #f59e0b;
+            background: #2563eb;
         }
     </style>
 </head>
 <body class="antialiased min-h-screen flex items-center justify-center p-4 text-slate-200" 
-      style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);">
+      style="background: radial-gradient(circle at top left, #1e3a8a 0%, #0f172a 100%);">
     
     <div class="w-full max-w-lg">
         {{ $slot }}

@@ -47,8 +47,10 @@ class RegistrationsTable
                 //
             ])
             ->actions([
-                ViewAction::make(),
-                EditAction::make(),
+                \Filament\Actions\ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

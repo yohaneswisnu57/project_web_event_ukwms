@@ -133,9 +133,11 @@ class InvitationResource extends Resource
                             ->success()
                             ->send();
                     }),
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                \Filament\Actions\ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

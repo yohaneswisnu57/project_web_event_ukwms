@@ -63,7 +63,9 @@ class RegistrationRelationManager extends RelationManager
             ->filters([])
             ->headerActions([])
             ->actions([
-                ViewAction::make(),
+                \Filament\Actions\ActionGroup::make([
+                    ViewAction::make(),
+                ]),
             ])
             ->bulkActions([]);
     }
