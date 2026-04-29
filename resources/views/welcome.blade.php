@@ -33,8 +33,8 @@
 
     {{-- Section 2: Event Details - Removed as information is in the banner --}}
 
-    {{-- Section 3: Agenda --}}
-    <section id="agenda" class="py-32 scroll-mt-20 bg-slate-50">
+    {{-- Section 3: Agenda ditutup karena gak jelas --}}
+    <!-- <section id="agenda" class="py-32 scroll-mt-20 bg-slate-50">
         <div class="container mx-auto px-6">
             <div class="text-center mb-20">
                 <span class="text-[#FAC43A] font-bold uppercase tracking-[0.2em] text-xs">Timeline Acara</span>
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     {{-- Section 4: Speakers --}}
     <section class="py-32 bg-white">
