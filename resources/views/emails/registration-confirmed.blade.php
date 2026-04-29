@@ -18,9 +18,9 @@ Silakan simpan **Invitation QR Code** di bawah ini untuk ditunjukkan kepada pani
 
 <x-mail::panel>
 **Detail Acara:**
-- **Tanggal:** 16 Mei 2026
-- **Waktu:** 09:00 - 15:00 WIB
-- **Lokasi:** Auditorium UKWMS, Jl. Dinoyo No. 42-44, Surabaya.
+- **Tanggal:** Sabtu, 16 Mei 2026
+- **Waktu:** 14:00 - 17:00 WIB (mohon hadir 15 menit sebelum acara)
+- **Lokasi:** Auditorium Benedictus Lt. 4, UKWMS Kampus Dinoyo
 </x-mail::panel>
 
 <x-mail::button :url="url('/')" color="success">
