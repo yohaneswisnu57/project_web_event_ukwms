@@ -19,6 +19,40 @@ Route::get('/user-manual', function () {
     return view('user-manual');
 })->name('user-manual');
 
+// Email Preview Route (For Testing)
+Route::get('/preview-email', function () {
+    // Gunakan transaksi agar data dummy tidak benar-benar tersimpan ke database permanen
+    DB::beginTransaction();
+    
+    try {
+        $invitation = \App\Models\Invitation::create([
+            'name' => 'Bpk. Yohanes (Preview)',
+            'unique_code' => 'PREVIEW-' . rand(1000, 9999),
+            'email' => 'yohanes-wp@ukwms.ac.id',
+            'is_used' => true,
+        ]);
+
+        $registration = \App\Models\Registration::create([
+            'invitation_id' => $invitation->id,
+            'uuid' => (string) \Illuminate\Support\Str::uuid(),
+            'attendance_count' => 1,
+            'email' => 'yohanes-wp@ukwms.ac.id',
+            'phone' => '081234567890',
+            'position' => 'Preview Position'
+        ]);
+
+        $mailable = new \App\Mail\RegistrationConfirmedMail($registration);
+        $html = $mailable->render();
+        
+        DB::rollBack(); // Kembalikan database ke kondisi semula
+        
+        return $html;
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return 'Error: ' . $e->getMessage();
+    }
+})->name('preview-email');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/invitations/template', function () {
         $headers = [
