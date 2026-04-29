@@ -14,6 +14,11 @@ Route::get('/login', function () {
     return redirect()->route('filament.admin.auth.login');
 })->name('login');
 
+// Documentation & Progress Report
+Route::get('/user-manual', function () {
+    return view('user-manual');
+})->name('user-manual');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/invitations/template', function () {
         $headers = [

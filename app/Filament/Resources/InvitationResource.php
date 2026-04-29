@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Actions\ActionGroup;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\ExportAction;
@@ -123,17 +124,14 @@ class InvitationResource extends Resource
                     ->label('Copy Link')
                     ->icon('heroicon-o-clipboard')
                     ->color('info')
+                    ->url('#')
                     ->extraAttributes(fn (Invitation $record) => [
-                        'x-on:click' => "window.isSecureContext ? navigator.clipboard.writeText('" . $record->registration_link . "') : alert('Gagal menyalin: Browser membutuhkan HTTPS untuk fitur copy clipboard. Silakan salin link secara manual.')",
-                    ])
-                    ->action(function (Invitation $record) {
-                        Notification::make()
-                            ->title('Proses Salin Selesai')
-                            ->body('Jika Anda menggunakan HTTPS, link sudah tersimpan di clipboard.')
-                            ->success()
-                            ->send();
-                    }),
-                \Filament\Actions\ActionGroup::make([
+                        'x-on:click.prevent' => "
+                            window.navigator.clipboard.writeText('{$record->registration_link}');
+                            \$tooltip('Link berhasil disalin!');
+                        ",
+                    ]),
+                ActionGroup::make([
                     ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make(),
