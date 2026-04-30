@@ -73,6 +73,7 @@ class RegistrationsTable
                         $record->update(['validated_at' => now()]);
                         
                         \Illuminate\Support\Facades\Mail::to($record->email)
+                            ->cc('adminlpks@ukwms.ac.id')
                             ->send(new \App\Mail\RegistrationConfirmedMail($record));
 
                         \Filament\Notifications\Notification::make()

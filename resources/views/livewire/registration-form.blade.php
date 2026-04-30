@@ -9,7 +9,7 @@
                     </svg>
                 </div>
                 <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Registrasi Berhasil!</h2>
-                <p class="text-slate-500 mb-8 leading-relaxed">Terima kasih atas konfirmasi kehadiran Anda. Kami telah mengirimkan detail pendaftaran ke email Anda.</p>
+                <p class="text-slate-500 mb-8 leading-relaxed">Terima kasih atas konfirmasi kehadiran Anda. Admin akan memvalidasi data Anda dan mengirimkan QR code undangan ke email Anda.</p>
                 
                 <div class="bg-slate-50 border border-slate-100 rounded-3xl p-8 mb-8 text-left">
                     <div class="space-y-4">

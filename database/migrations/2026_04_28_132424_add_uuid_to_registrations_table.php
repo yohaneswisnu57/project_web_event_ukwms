@@ -32,7 +32,7 @@ return new class extends Migration
         });
 
         // Add unique index if it doesn't exist
-        $indexExists = collect(DB::select("SHOW INDEX FROM registrations"))->contains('Key_name', 'registrations_uuid_unique');
+        $indexExists = collect(Schema::getIndexes('registrations'))->contains('name', 'registrations_uuid_unique');
         
         if (!$indexExists) {
             Schema::table('registrations', function (Blueprint $table) {

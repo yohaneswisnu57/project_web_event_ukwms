@@ -41,11 +41,14 @@ class RegistrationTest extends TestCase
         $invitation = Invitation::factory()->create([
             'is_used' => true,
         ]);
+        Registration::factory()->create([
+            'invitation_id' => $invitation->id,
+        ]);
 
         $response = $this->get("/join/{$invitation->unique_code}");
 
         $response->assertStatus(200);
-        $response->assertSee('Sudah Terdaftar');
+        $response->assertSee('Registrasi Berhasil!');
     }
 
     /** @test */
@@ -96,11 +99,11 @@ class RegistrationTest extends TestCase
             ->set('attendance_count', 2)
             ->set('attendees.0.name', 'Main Guest')
             ->set('attendees.0.email', 'main@example.com')
-            ->set('attendees.0.phone', '081')
+            ->set('attendees.0.phone', '08123456789')
             ->set('attendees.0.position', 'CEO')
             ->set('attendees.1.name', 'Plus One')
             ->set('attendees.1.email', 'plus@example.com')
-            ->set('attendees.1.phone', '082')
+            ->set('attendees.1.phone', '08123456780')
             ->set('attendees.1.position', 'Assistant')
             ->call('submit')
             ->assertSet('submitted', true);
