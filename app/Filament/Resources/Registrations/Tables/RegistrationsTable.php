@@ -30,14 +30,17 @@ class RegistrationsTable
 
                 TextColumn::make('attendance_count')
                     ->label('Total Hadir')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('email')
                     ->label('Email')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('phone')
-                    ->label('Nomor HP'),
+                    ->label('Nomor HP')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('validated_at')
                     ->label('Status Validasi')
