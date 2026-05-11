@@ -29,6 +29,23 @@
                 </a>
             </div>
         </section>
+    @elseif($isClosed)
+        {{-- Closed State --}}
+        <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-rose-100 animate-in fade-in zoom-in duration-700">
+                <div class="w-24 h-24 bg-rose-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Registrasi Ditutup</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Mohon maaf, waktu registrasi untuk acara ini telah berakhir pada tanggal <b>13 Mei 2026 pukul 12.00 WIB</b>.</p>
+                
+                <a href="{{ url('/') }}" class="inline-block px-10 py-5 bg-slate-900 text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20">
+                    Kembali ke Beranda
+                </a>
+            </div>
+        </section>
     @else
         {{-- Landing Page + Form --}}
         

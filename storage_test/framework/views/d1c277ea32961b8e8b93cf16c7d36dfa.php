@@ -1,5 +1,8 @@
 <div class="space-y-0 text-slate-800">
-    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($submitted): ?>
+    <?php
+use Livewire\Mechanisms\ExtendBlade\ExtendBlade;
+
+if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if BLOCK]><![endif]--><?php } ?><?php if ($submitted) { ?>
         
         <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
             <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-[#FAC43A]/20 animate-in fade-in zoom-in duration-700">
@@ -29,7 +32,24 @@
                 </a>
             </div>
         </section>
-    <?php else: ?>
+    <?php } elseif ($isClosed) { ?>
+        
+        <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-rose-100 animate-in fade-in zoom-in duration-700">
+                <div class="w-24 h-24 bg-rose-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Registrasi Ditutup</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Mohon maaf, waktu registrasi untuk acara ini telah berakhir pada tanggal <b>13 Mei 2026 pukul 12.00 WIB</b>.</p>
+                
+                <a href="<?php echo e(url('/')); ?>" class="inline-block px-10 py-5 bg-slate-900 text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20">
+                    Kembali ke Beranda
+                </a>
+            </div>
+        </section>
+    <?php } else { ?>
         
         
         
@@ -89,56 +109,72 @@
                                             <input type="text" wire:model="attendees.0.name" 
                                                    class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
                                                    placeholder="Masukkan nama lengkap...">
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['attendees.0.name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            <?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if BLOCK]><![endif]--><?php } ?><?php $__errorArgs = ['attendees.0.name'];
+        $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+        if ($__bag->has($__errorArgs[0])) {
+            if (isset($message)) {
+                $__messageOriginal = $message;
+            }
+            $message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
+            if (isset($__messageOriginal)) {
+                $message = $__messageOriginal;
+            }
+        }
+        unset($__errorArgs, $__bag); ?><?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if ENDBLOCK]><![endif]--><?php } ?>
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Email</label>
                                             <input type="email" wire:model="attendees.0.email" 
                                                    class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
                                                    placeholder="email@example.com">
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['attendees.0.email'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            <?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if BLOCK]><![endif]--><?php } ?><?php $__errorArgs = ['attendees.0.email'];
+        $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+        if ($__bag->has($__errorArgs[0])) {
+            if (isset($message)) {
+                $__messageOriginal = $message;
+            }
+            $message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
+            if (isset($__messageOriginal)) {
+                $message = $__messageOriginal;
+            }
+        }
+        unset($__errorArgs, $__bag); ?><?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if ENDBLOCK]><![endif]--><?php } ?>
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Nomor WhatsApp</label>
                                             <input type="text" wire:model="attendees.0.phone" 
                                                    class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
                                                    placeholder="081234567890">
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['attendees.0.phone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            <?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if BLOCK]><![endif]--><?php } ?><?php $__errorArgs = ['attendees.0.phone'];
+        $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+        if ($__bag->has($__errorArgs[0])) {
+            if (isset($message)) {
+                $__messageOriginal = $message;
+            }
+            $message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
+            if (isset($__messageOriginal)) {
+                $message = $__messageOriginal;
+            }
+        }
+        unset($__errorArgs, $__bag); ?><?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if ENDBLOCK]><![endif]--><?php } ?>
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Jabatan / Instansi</label>
                                             <input type="text" wire:model="attendees.0.position" 
                                                    class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
                                                    placeholder="Contoh: CEO di PT Maju Mundur">
-                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['attendees.0.position'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            <?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if BLOCK]><![endif]--><?php } ?><?php $__errorArgs = ['attendees.0.position'];
+        $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+        if ($__bag->has($__errorArgs[0])) {
+            if (isset($message)) {
+                $__messageOriginal = $message;
+            }
+            $message = $__bag->first($__errorArgs[0]); ?> <span class="text-rose-500 text-xs font-bold mt-1 ml-1"><?php echo e($message); ?></span> <?php unset($message);
+            if (isset($__messageOriginal)) {
+                $message = $__messageOriginal;
+            }
+        }
+        unset($__errorArgs, $__bag); ?><?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if ENDBLOCK]><![endif]--><?php } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +200,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
         <footer class="py-12 bg-slate-50 border-t border-slate-200 text-center">
             <p class="text-[0.7rem] text-slate-400 uppercase tracking-widest font-bold">&copy; 2026 Universitas Katolik Widya Mandala Surabaya. All Rights Reserved.</p>
         </footer>
-    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    <?php } ?><?php if (ExtendBlade::isRenderingLivewireComponent()) { ?><!--[if ENDBLOCK]><![endif]--><?php } ?>
 
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

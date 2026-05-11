@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Invitation;
 use App\Models\Registration;
-use App\Models\RegistrationAttendee;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -15,21 +17,27 @@ class RegistrationForm extends Component
 
     // Form fields
     public int $attendance_count = 1;
+
     public array $attendees = [
         [
             'name' => '',
             'email' => '',
             'phone' => '',
             'position' => '',
-        ]
+        ],
     ];
 
     // State
     public bool $submitted = false;
+
+    public bool $isClosed = false;
+
     public ?Registration $latestRegistration = null;
 
     public function mount(string $code)
     {
+        $this->checkIfClosed();
+
         $this->invitation = Invitation::where('unique_code', $code)->firstOrFail();
 
         // If already registered, show the success state and fetch registration
@@ -37,6 +45,12 @@ class RegistrationForm extends Component
             $this->submitted = true;
             $this->latestRegistration = Registration::where('invitation_id', $this->invitation->id)->first();
         }
+    }
+
+    protected function checkIfClosed(): void
+    {
+        $closingDate = Carbon::create(2026, 5, 13, 12, 0, 0, 'Asia/Jakarta');
+        $this->isClosed = now()->greaterThan($closingDate);
     }
 
     protected function initializeAttendees()
@@ -73,24 +87,36 @@ class RegistrationForm extends Component
 
     public function submit()
     {
+        $this->checkIfClosed();
+
+        if ($this->isClosed) {
+            Notification::make()
+                ->title('Registrasi Ditutup')
+                ->body('Mohon maaf, waktu registrasi telah berakhir.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
         // Security: Rate Limiting by IP (Max 3 submissions per minute)
-        $throttleKey = 'register-attempt:' . request()->ip();
-        if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts($throttleKey, 3)) {
-            $seconds = \Illuminate\Support\Facades\RateLimiter::availableIn($throttleKey);
-            
-            \Filament\Notifications\Notification::make()
+        $throttleKey = 'register-attempt:'.request()->ip();
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            Notification::make()
                 ->title('Keamanan: Terlalu Banyak Upaya')
                 ->body("Silakan coba lagi dalam {$seconds} detik untuk alasan keamanan.")
                 ->danger()
                 ->send();
-                
+
             return;
         }
 
         $this->validate();
 
         // Record the attempt
-        \Illuminate\Support\Facades\RateLimiter::hit($throttleKey, 60);
+        RateLimiter::hit($throttleKey, 60);
 
         // Create the registration
         $this->latestRegistration = Registration::create([
