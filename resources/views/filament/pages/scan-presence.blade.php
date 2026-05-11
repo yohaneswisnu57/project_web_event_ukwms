@@ -21,33 +21,33 @@
                                 
                                 {{-- HUD Overlays --}}
                                 <div style="position: absolute; inset: 0; pointer-events: none; border: 12px solid rgba(0,0,0,0.2);" class="sm:border-[16px]"></div>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid rgba(255,255,255,0.2); border-radius: 1rem;" class="scanner-hud">
-                                    <div style="position: absolute; top: -4px; left: -4px; width: 1.25rem; height: 1.25rem; border-top: 4px solid #FAC43A; border-left: 4px solid #FAC43A; border-top-left-radius: 0.375rem;"></div>
-                                    <div style="position: absolute; top: -4px; right: -4px; width: 1.25rem; height: 1.25rem; border-top: 4px solid #FAC43A; border-right: 4px solid #FAC43A; border-top-right-radius: 0.375rem;"></div>
-                                    <div style="position: absolute; bottom: -4px; left: -4px; width: 1.25rem; height: 1.25rem; border-bottom: 4px solid #FAC43A; border-left: 4px solid #FAC43A; border-bottom-left-radius: 0.375rem;"></div>
-                                    <div style="position: absolute; bottom: -4px; right: -4px; width: 1.25rem; height: 1.25rem; border-bottom: 4px solid #FAC43A; border-right: 4px solid #FAC43A; border-bottom-right-radius: 0.375rem;"></div>
+                                <div id="scanner-hud" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid rgba(255,255,255,0.1); border-radius: 1.5rem; transition: all 0.3s ease;" class="scanner-hud">
+                                    <div style="position: absolute; top: -2px; left: -2px; width: 2rem; height: 2rem; border-top: 4px solid #FAC43A; border-left: 4px solid #FAC43A; border-top-left-radius: 1rem;"></div>
+                                    <div style="position: absolute; top: -2px; right: -2px; width: 2rem; height: 2rem; border-top: 4px solid #FAC43A; border-right: 4px solid #FAC43A; border-top-right-radius: 1rem;"></div>
+                                    <div style="position: absolute; bottom: -2px; left: -2px; width: 2rem; height: 2rem; border-bottom: 4px solid #FAC43A; border-left: 4px solid #FAC43A; border-bottom-left-radius: 1rem;"></div>
+                                    <div style="position: absolute; bottom: -2px; right: -2px; width: 2rem; height: 2rem; border-bottom: 4px solid #FAC43A; border-right: 4px solid #FAC43A; border-bottom-right-radius: 1rem;"></div>
                                 </div>
                                 {{-- Scan Animation --}}
-                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #FAC43A; box-shadow: 0 0 15px #FAC43A; animation: scan-line 4s linear infinite; opacity: 0.5;"></div>
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, transparent, #FAC43A, transparent); box-shadow: 0 0 20px #FAC43A; animation: scan-line 3s ease-in-out infinite; opacity: 0.8; z-index: 5;"></div>
                             </div>
 
-                            <div id="camera-selector-container" style="margin-top: 1rem; display: none;">
+                            <div id="camera-selector-container" style="margin-top: 1.5rem; display: none;">
                                 <div style="position: relative;">
-                                    <select id="camera-select" onchange="window.changeCamera(this.value)" style="width: 100%; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 700; color: #1e293b; appearance: none; cursor: pointer; outline: none; transition: all 0.2s;">
+                                    <select id="camera-select" onchange="window.changeCamera(this.value)" style="width: 100%; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1rem 1.25rem; font-size: 0.875rem; font-weight: 700; color: #1e293b; appearance: none; cursor: pointer; outline: none; transition: all 0.2s; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);">
                                         <option value="">Mendeteksi Kamera...</option>
                                     </select>
-                                    <div style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: #94a3b8;">
-                                        <x-heroicon-o-chevron-down style="width: 1rem; height: 1rem;" />
+                                    <div style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: #94a3b8;">
+                                        <x-heroicon-o-chevron-down style="width: 1.25rem; height: 1.25rem;" />
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="scanner-status" style="margin-top: 1rem; padding: 0.75rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" class="sm:mt-4 sm:p-4 sm:gap-3">
-                                <div style="position: relative; display: flex; height: 0.5rem; width: 0.5rem;" class="sm:h-2.5 sm:w-2.5">
+                            <div id="scanner-status" style="margin-top: 1rem; padding: 1rem; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: center; gap: 0.75rem;" class="sm:mt-4 sm:p-4">
+                                <div style="position: relative; display: flex; height: 0.625rem; width: 0.625rem;">
                                     <span style="animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 9999px; background: #fbbf24; opacity: 0.75;"></span>
-                                    <span style="position: relative; display: inline-flex; border-radius: 9999px; height: 0.5rem; width: 0.5rem; background: #f59e0b;" class="sm:h-2.5 sm:w-2.5"></span>
+                                    <span style="position: relative; display: inline-flex; border-radius: 9999px; height: 0.625rem; width: 0.625rem; background: #f59e0b;"></span>
                                 </div>
-                                <span id="status-text" style="font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: #64748b;" class="sm:text-[0.5625rem]">Menghubungkan Kamera...</span>
+                                <span id="status-text" style="font-size: 0.625rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: #64748b;">Menghubungkan Kamera...</span>
                             </div>
                         </div>
                     </x-filament::section>
@@ -181,6 +181,13 @@
                 // Calculate dynamic QR box size (70% of container width, max 300px)
                 const containerWidth = readerElement.offsetWidth;
                 const qrBoxSize = Math.min(containerWidth * 0.7, 300);
+
+                // Sync HUD size with qrBoxSize
+                const scannerHud = document.getElementById('scanner-hud');
+                if (scannerHud) {
+                    scannerHud.style.width = `${qrBoxSize}px`;
+                    scannerHud.style.height = `${qrBoxSize}px`;
+                }
                 
                 const statusText = document.getElementById('status-text');
 
@@ -202,8 +209,13 @@
                                 
                                 selectorContainer.style.display = 'block';
                                 
-                                // Default to environment camera if possible
-                                const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
+                                // Enhanced Back Camera Detection
+                                const backKeywords = ['back', 'environment', 'rear', 'belakang', 'wide', 'main'];
+                                const backCamera = devices.find(d => {
+                                    const label = d.label.toLowerCase();
+                                    return backKeywords.some(keyword => label.includes(keyword));
+                                });
+                                
                                 selectedCameraId = backCamera ? backCamera.id : devices[0].id;
                                 cameraSelect.value = selectedCameraId;
                             }
@@ -228,7 +240,8 @@
                     deviceId,
                     { 
                         fps: 30,
-                        qrbox: { width: qrBoxSize, height: qrBoxSize },
+                        // Disabled qrbox to let it scan the full video area and remove the buggy white overlay.
+                        // The custom yellow HUD will serve as the visual guide instead.
                         aspectRatio: 1.0
                     },
                     (decodedText) => {
@@ -267,27 +280,24 @@
 
     <style>
         @keyframes scan-line {
-            0% { top: 15%; }
-            50% { top: 85%; }
-            100% { top: 15%; }
+            0% { top: 20%; opacity: 0; }
+            5% { opacity: 0.8; }
+            50% { top: 80%; opacity: 0.8; }
+            95% { opacity: 0.8; }
+            100% { top: 20%; opacity: 0; }
         }
         @keyframes ping {
             75%, 100% { transform: scale(2); opacity: 0; }
         }
-        #reader__scan_region { background: transparent !important; }
+        /* Hide default scanning box from library */
+        #reader__scan_region { display: none !important; }
+        #reader__scan_region + div { display: none !important; }
+        
         #reader video { border-radius: 1.25rem !important; object-fit: cover !important; }
         .fi-section { border-radius: 2rem !important; }
         .fi-ta-content { border-radius: 1rem !important; }
         .fi-ta-header { display: none !important; }
         
-        /* Adjust HUD size to match dynamic qrbox */
-        .scanner-hud {
-            width: 70%;
-            height: 70%;
-            max-width: 300px;
-            max-height: 300px;
-        }
-
         @media (max-width: 640px) {
             .fi-section { border-radius: 1.5rem !important; }
         }

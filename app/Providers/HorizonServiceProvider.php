@@ -8,15 +8,30 @@ use Laravel\Horizon\HorizonApplicationServiceProvider;
 
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {
+    public function register(): void
+    {
+        parent::register();
+        \Illuminate\Support\Facades\Log::info('HORIZON_PROVIDER_REGISTERED');
+    }
+
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
         parent::boot();
+    }
+
+    /**
+     * Configure the Horizon authorization services.
+     */
+    protected function authorization(): void
+    {
+        $this->gate();
 
         Horizon::auth(function ($request) {
-            return Gate::check('viewHorizon', [$request->user()]);
+            return app()->environment('local') ||
+                   Gate::check('viewHorizon', [$request->user()]);
         });
     }
 

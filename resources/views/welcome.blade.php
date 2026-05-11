@@ -88,11 +88,11 @@
                 <div class="group relative bg-slate-50 rounded-[3rem] p-10 hover:bg-slate-100 transition-all border border-slate-200/50 pt-32">
                     <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl rotate-2 group-hover:rotate-0 transition-transform bg-slate-200">
                         <img src="/images/pak jonan.png" 
-                             alt="Ignatius Jonan" 
+                             alt="Ignasius Jonan" 
                              class="w-full h-full object-cover">
                     </div>
                     <div class="text-center">
-                        <h4 class="text-3xl font-black text-slate-900">Ignatius Jonan</h4>
+                        <h4 class="text-3xl font-black text-slate-900">Ignasius Jonan</h4>
                         <p class="text-[#FAC43A] font-bold text-xs uppercase tracking-widest mt-1">Ketua Umum Yayasan Widya Mandala Surabaya</p>
                         <!-- <p class="text-slate-500 mt-6 text-sm leading-relaxed italic">"Kepemimpinan adalah teladan. Mari kita bangun masa depan yang lebih baik melalui integritas dan inovasi."</p> -->
                     </div>

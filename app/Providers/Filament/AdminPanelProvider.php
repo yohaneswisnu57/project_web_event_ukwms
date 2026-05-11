@@ -47,13 +47,6 @@ class AdminPanelProvider extends PanelProvider
                 // AccountWidget::class,
                 // FilamentInfoWidget::class,
             ])
-            ->navigationItems([
-                NavigationItem::make('Email Monitoring')
-                    ->url(fn (): string => route('horizon.index'))
-                    ->icon('heroicon-o-envelope')
-                    ->group('Monitoring')
-                    ->sort(99),
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
