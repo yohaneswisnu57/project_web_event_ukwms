@@ -123,15 +123,17 @@
                         @endif
 
                         <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;" class="sm:gap-3">
-                            <x-filament::button 
-                                wire:click="confirmPresence" 
-                                color="gray"
-                                size="xl"
-                                style="width: 100%; min-height: 44px; padding: 0.875rem; background: #FAC43A; border-radius: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; box-shadow: 0 15px 20px -5px rgba(0,0,0,0.1);"
-                                class="hover:!bg-[#FAC43A] hover:!text-black transition-all duration-300 sm:p-4 sm:tracking-[0.2em] sm:rounded-2xl cursor-pointer"
-                            >
-                                Konfirmasi Kehadiran
-                            </x-filament::button>
+                            @if(! $scannedRegistration->checked_in_at)
+                                <x-filament::button 
+                                    wire:click="confirmPresence" 
+                                    color="gray"
+                                    size="xl"
+                                    style="width: 100%; min-height: 44px; padding: 0.875rem; background: #FAC43A; border-radius: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; box-shadow: 0 15px 20px -5px rgba(0,0,0,0.1);"
+                                    class="hover:!bg-[#FAC43A] hover:!text-black transition-all duration-300 sm:p-4 sm:tracking-[0.2em] sm:rounded-2xl cursor-pointer"
+                                >
+                                    Konfirmasi Kehadiran
+                                </x-filament::button>
+                            @endif
                             
                             <x-filament::button 
                                 wire:click="resetScan" 

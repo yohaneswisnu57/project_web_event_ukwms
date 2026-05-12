@@ -9,7 +9,10 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -96,6 +99,49 @@ class RegistrationsTable
                     }),
 
                 ActionGroup::make([
+                    Action::make('showQrCode')
+                        ->label('Lihat QR Code')
+                        ->icon('heroicon-s-qr-code')
+                        ->color('gray')
+                        ->visible(fn ($record) => filled($record->validated_at))
+                        ->modalHeading('Tiket QR Code')
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Tutup')
+                        ->modalWidth('sm')
+                        ->infolist([
+                            Section::make()
+                                ->schema([
+                                    ViewEntry::make('qr_code')
+                                        ->view('filament.resources.registrations.qr-code-entry')
+                                        ->hiddenLabel(),
+                                    TextEntry::make('id')
+                                        ->label('ID Registrasi')
+                                        ->formatStateUsing(fn ($state) => 'REG-ID: '.str_pad($state, 6, '0', STR_PAD_LEFT))
+                                        ->weight('black')
+                                        ->alignCenter(),
+                                    TextEntry::make('invitation.name')
+                                        ->label('Nama Tamu')
+                                        ->alignCenter(),
+                                ])
+                                ->columns(1),
+                        ]),
+                    Action::make('resetCheckIn')
+                        ->label('Reset Check-in')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('warning')
+                        ->visible(fn ($record) => filled($record->checked_in_at))
+                        ->requiresConfirmation()
+                        ->modalHeading('Reset Kehadiran?')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus status kehadiran tamu ini? Data waktu check-in akan dikosongkan.')
+                        ->action(function ($record) {
+                            $record->update(['checked_in_at' => null]);
+
+                            Notification::make()
+                                ->title('Berhasil Reset')
+                                ->body('Status kehadiran tamu telah dikosongkan.')
+                                ->success()
+                                ->send();
+                        }),
                     ViewAction::make(),
                     EditAction::make(),
                 ]),
