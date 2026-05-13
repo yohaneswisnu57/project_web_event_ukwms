@@ -133,6 +133,11 @@
                                 </div>
 
                                 <div class="flex flex-col items-center pt-8">
+                                    @error('registration_limit')
+                                        <div class="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl text-xs font-bold text-center mb-6 w-full">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                     <button type="submit" wire:loading.attr="disabled"
                                             class="w-full md:w-auto px-16 py-6 bg-[#FAC43A] text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e5b334] transition-all shadow-xl shadow-[#FAC43A]/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                                         <span wire:loading.remove>Konfirmasi Kehadiran</span>

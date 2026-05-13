@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use App\Models\Invitation;
 use App\Models\Registration;
+use App\Models\Setting;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -49,7 +51,8 @@ class RegistrationForm extends Component
 
     protected function checkIfClosed(): void
     {
-        $closingDate = Carbon::create(2026, 5, 13, 12, 0, 0, 'Asia/Jakarta');
+        $setting = Setting::where('key', 'registration_closing_at')->value('value');
+        $closingDate = $setting ? Carbon::parse($setting) : Carbon::create(2026, 5, 13, 16, 0, 0, 'Asia/Jakarta');
         $this->isClosed = now()->greaterThan($closingDate);
     }
 
@@ -65,7 +68,7 @@ class RegistrationForm extends Component
             'attendees.*.name' => 'required|string|min:3|max:255',
             'attendees.*.email' => 'required|email|max:255',
             'attendees.*.phone' => 'required|numeric|digits_between:10,15',
-            'attendees.*.position' => 'required|regex:/^[a-zA-Z\s]+$/u|max:255',
+            'attendees.*.position' => 'required|string|max:255',
         ];
     }
 
@@ -104,13 +107,9 @@ class RegistrationForm extends Component
         if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
             $seconds = RateLimiter::availableIn($throttleKey);
 
-            Notification::make()
-                ->title('Keamanan: Terlalu Banyak Upaya')
-                ->body("Silakan coba lagi dalam {$seconds} detik untuk alasan keamanan.")
-                ->danger()
-                ->send();
-
-            return;
+            throw ValidationException::withMessages([
+                'registration_limit' => "Keamanan: Silakan coba lagi dalam {$seconds} detik.",
+            ]);
         }
 
         $this->validate();
