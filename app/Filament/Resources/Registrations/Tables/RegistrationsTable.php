@@ -24,12 +24,18 @@ class RegistrationsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->with(['invitation']))
+            ->modifyQueryUsing(fn ($query) => $query->with(['invitation', 'attendees']))
             ->columns([
                 TextColumn::make('invitation.name')
                     ->label('Undangan')
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('attendees.name')
+                    ->label('Nama Tamu')
+                    ->listWithLineBreaks()
+                    ->bulleted()
+                    ->searchable(),
 
                 TextColumn::make('attendance_count')
                     ->label('Total Hadir')

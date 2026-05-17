@@ -23,7 +23,7 @@ class ListRegistrations extends ListRecords
             Action::make('setRegistrationDeadline')
                 ->label('Batas Waktu Registrasi')
                 ->icon('heroicon-o-clock')
-                ->color('warning')
+                ->color('info')
                 ->form([
                     Grid::make(2)
                         ->schema([
