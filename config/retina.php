@@ -74,4 +74,47 @@ return [
         'whatsapp' => null,
     ],
 
+    /*
+    | Gambar arsip di halaman depan. Semuanya lukisan dan gravur domain publik
+    | atau berlisensi terbuka tentang dokter yang mengajar di depan penonton;
+    | kreditnya tampil di footer. Bukan foto acara atau ruangan RETINA sendiri.
+    */
+    'archive_images' => [
+        'lecon-clinique' => [
+            'file' => 'images/retina/lecon-clinique.webp',
+            'alt' => 'Lukisan seorang dokter berdiri berbicara di depan ruangan penuh dokter yang mendengarkan',
+            'caption' => 'André Brouillet, Pelajaran Klinis di Salpêtrière, 1887',
+            'license' => 'Domain publik',
+            'source' => 'https://commons.wikimedia.org/wiki/File:Une_le%C3%A7on_clinique_%C3%A0_la_Salp%C3%AAtri%C3%A8re.jpg',
+        ],
+        'anatomy-lesson-tulp' => [
+            'file' => 'images/retina/anatomy-lesson-tulp.webp',
+            'alt' => 'Lukisan Dr. Tulp bertopi hitam menjelaskan anatomi lengan kepada para dokter di sekelilingnya',
+            'caption' => 'Rembrandt, Pelajaran Anatomi Dr. Nicolaes Tulp, 1632',
+            'license' => 'Domain publik',
+            'source' => 'https://commons.wikimedia.org/wiki/File:Rembrandt_-_The_Anatomy_Lesson_of_Dr_Nicolaes_Tulp.jpg',
+        ],
+        'agnew-clinic' => [
+            'file' => 'images/retina/agnew-clinic.webp',
+            'alt' => 'Lukisan Dr. Agnew berjas putih berbicara di depan tribun amfiteater yang penuh mahasiswa',
+            'caption' => 'Thomas Eakins, Klinik Agnew, 1889',
+            'license' => 'Domain publik',
+            'source' => 'https://commons.wikimedia.org/wiki/File:The_Agnew_Clinic_-_Thomas_Eakins.jpg',
+        ],
+        'anatomical-theatre-cambridge' => [
+            'file' => 'images/retina/anatomical-theatre-cambridge.webp',
+            'alt' => 'Gravur teater anatomi bundar dengan tribun bertingkat dan kubah kaca',
+            'caption' => 'Teater Anatomi Cambridge, cetakan berwarna',
+            'license' => 'CC BY 4.0, Wellcome Collection',
+            'source' => 'https://commons.wikimedia.org/w/index.php?curid=36344642',
+        ],
+        'retina-drawing' => [
+            'file' => 'images/retina/retina-drawing.webp',
+            'alt' => 'Gambar garis sel-sel retina mata dari buku anatomi lama',
+            'caption' => 'Gambar garis lapisan retina',
+            'license' => 'CC BY 4.0, Wellcome Collection',
+            'source' => 'https://commons.wikimedia.org/wiki/File:Line_drawing_of_the_retina_Wellcome_L0040596.jpg',
+        ],
+    ],
+
 ];

@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -49,6 +50,18 @@ class RegistrationForm extends Component
 
     #[Locked]
     public ?string $registeredEmail = null;
+
+    /**
+     * Nama yang sudah diketik di "tiket atas namamu" pada landing page ikut terisi.
+     */
+    public function mount(): void
+    {
+        $name = request()->query('nama');
+
+        if (is_string($name)) {
+            $this->full_name = Str::limit(trim($name), 255, '');
+        }
+    }
 
     /**
      * @return array<string, array<int, mixed>>

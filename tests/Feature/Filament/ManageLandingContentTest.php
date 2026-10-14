@@ -84,7 +84,7 @@ class ManageLandingContentTest extends TestCase
             ->assertSee('Membuka dengan kuat')
             ->assertSee('Menutup dengan berkesan')
             ->assertDontSee('Menyusun pesan')
-            ->assertSee('hingga 12.30 WIB')
+            ->assertSee('09.00–12.30 WIB')
             ->assertSee('Termasuk sertifikat')
             ->assertSee('https://wa.me/6281298765432', false)
             ->assertSee('Narahubung: Kak Rina');
@@ -184,7 +184,7 @@ class ManageLandingContentTest extends TestCase
 
         $this->get(route('home'))
             ->assertDontSee('alt="Foto Henry Christian Tjandra"', false)
-            ->assertSee('r-portrait__initials', false);
+            ->assertDontSee('r-speaker__media', false);
     }
 
     public function test_landing_page_uses_config_defaults_until_content_is_saved(): void

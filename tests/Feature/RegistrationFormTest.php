@@ -62,6 +62,24 @@ class RegistrationFormTest extends TestCase
             ->assertSee('141 002 178 3519');
     }
 
+    public function test_full_name_is_prefilled_from_the_landing_page_ticket(): void
+    {
+        Livewire::withQueryParams(['nama' => '  Maria Natalia  '])
+            ->test(RegistrationForm::class)
+            ->assertSet('full_name', 'Maria Natalia');
+    }
+
+    public function test_prefilled_name_is_capped_and_ignores_non_string_values(): void
+    {
+        Livewire::withQueryParams(['nama' => str_repeat('a', 300)])
+            ->test(RegistrationForm::class)
+            ->assertSet('full_name', str_repeat('a', 255));
+
+        Livewire::withQueryParams(['nama' => ['Maria']])
+            ->test(RegistrationForm::class)
+            ->assertSet('full_name', '');
+    }
+
     public function test_internal_student_can_register(): void
     {
         $component = $this->fillForm(['food_allergy' => 'Udang'])

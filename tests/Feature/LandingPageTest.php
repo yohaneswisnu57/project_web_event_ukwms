@@ -97,4 +97,36 @@ class LandingPageTest extends TestCase
 
         $this->get(route('home'))->assertSee('https://wa.me/6281234567890', false);
     }
+
+    public function test_archive_images_are_shown_with_their_credits(): void
+    {
+        $response = $this->get(route('home'))->assertOk();
+
+        foreach (config('retina.archive_images') as $image) {
+            $this->assertFileExists(public_path($image['file']));
+
+            $response
+                ->assertSee(asset($image['file']), false)
+                ->assertSee($image['caption'])
+                ->assertSee($image['source'], false);
+        }
+    }
+
+    public function test_ticket_preview_links_to_the_registration_form(): void
+    {
+        $this->get(route('home'))
+            ->assertSee('data-ticket-name', false)
+            ->assertSee('data-ticket-holder', false)
+            ->assertSee('data-ticket-link', false);
+    }
+
+    public function test_ticket_preview_link_is_hidden_once_registration_closes(): void
+    {
+        Setting::putValue(Participant::SETTING_CLOSING_AT, '2026-10-13 23:59:00');
+
+        $this->get(route('home'))
+            ->assertSee('data-ticket-name', false)
+            ->assertDontSee('data-ticket-link', false)
+            ->assertSee('Ditutup');
+    }
 }

@@ -1,4 +1,4 @@
-/* RETINA 2026 — perilaku kecil halaman publik: scroll reveal, hitung mundur, salin nomor rekening. */
+/* RETINA 2026 — perilaku kecil halaman publik: scroll reveal, hitung mundur, salin nomor rekening, tiket atas namamu. */
 (function () {
     var root = document.documentElement;
 
@@ -58,7 +58,7 @@
 
         function done() {
             button.setAttribute('data-copied', '');
-            label.textContent = 'Tersalin ✓';
+            label.textContent = 'Tersalin';
             clearTimeout(button._copyTimer);
             button._copyTimer = setTimeout(function () {
                 button.removeAttribute('data-copied');
@@ -70,4 +70,41 @@
             navigator.clipboard.writeText(button.getAttribute('data-copy')).then(done, function () {});
         }
     });
+
+    /* Tiket atas namamu: nama yang diketik langsung tampil di tiket, lalu dibawa ke formulir. */
+    var nameInput = document.querySelector('[data-ticket-name]');
+    var holder = document.querySelector('[data-ticket-holder]');
+    var ticketLink = document.querySelector('[data-ticket-link]');
+
+    if (nameInput && holder) {
+        var baseHref = ticketLink ? ticketLink.getAttribute('href') : null;
+
+        nameInput.addEventListener('input', function () {
+            var name = nameInput.value.trim();
+
+            holder.textContent = name || holder.getAttribute('data-placeholder');
+            holder.toggleAttribute('data-empty', !name);
+
+            if (ticketLink) {
+                ticketLink.setAttribute('href', name ? baseHref + '?nama=' + encodeURIComponent(name) : baseHref);
+            }
+        });
+
+        holder.setAttribute('data-empty', '');
+    }
+
+    /* Tombol daftar di ponsel disembunyikan selama tombol daftar lain sudah terlihat. */
+    var dock = document.querySelector('.r-dock');
+    var visibleTargets = new Set();
+
+    if (dock && 'IntersectionObserver' in window) {
+        var dockObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) { visibleTargets.add(entry.target); } else { visibleTargets.delete(entry.target); }
+            });
+            dock.toggleAttribute('data-hidden', visibleTargets.size > 0);
+        });
+
+        document.querySelectorAll('.r-panel--hero .r-btn, .r-band, .r-try .r-btn').forEach(function (el) { dockObserver.observe(el); });
+    }
 })();
