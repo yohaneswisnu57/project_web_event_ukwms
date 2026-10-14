@@ -6,6 +6,7 @@ use App\Livewire\RegistrationForm;
 use App\Models\Invitation;
 use App\Models\Registration;
 use App\Models\RegistrationAttendee;
+use App\Models\Setting;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -13,6 +14,16 @@ use Tests\TestCase;
 class RegistrationTest extends TestCase
 {
     use LazilyRefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Setting::updateOrCreate(
+            ['key' => 'registration_closing_at'],
+            ['value' => now()->addDay()->format('Y-m-d H:i:s')],
+        );
+    }
 
     /** @test */
     public function test_can_access_registration_page_with_valid_code()
@@ -109,7 +120,7 @@ class RegistrationTest extends TestCase
             ->assertSet('submitted', true);
 
         $this->assertCount(2, RegistrationAttendee::all());
-        
+
         $this->assertDatabaseHas('registration_attendees', [
             'name' => 'Plus One',
             'position' => 'Assistant',
