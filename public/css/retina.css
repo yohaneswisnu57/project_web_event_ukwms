@@ -1,6 +1,5 @@
 /* RETINA 2026 — halaman publik (landing + formulir pendaftaran).
-   Ditulis tangan tanpa build step. Arah desain: "poster yang terpasang" — judul RETINA
-   diam di tempat sementara lukisan arsip tentang dokter yang mengajar di depan penonton lewat di bawahnya. */
+   Ditulis tangan tanpa build step. Navy & emas UKWMS, Red Hat Display/Text, tanpa bayangan dan gradien. */
 
 :root {
     --navy-950: #081738;
@@ -30,11 +29,13 @@
     --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
     --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
     --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-    --step-head: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
-    --step-display: clamp(5.5rem, 13vw, 13rem);
+    --step-head: clamp(2rem, 1.3rem + 2.4vw, 3.5rem);
+    --step-display: clamp(4rem, 2rem + 7vw, 8.5rem);
+
+    --container: 1240px;
 
     --gutter: clamp(16px, 2.2vw, 32px);
-    --section: clamp(96px, 12vw, 200px);
+    --section: clamp(72px, 8vw, 128px);
     --ease-out: cubic-bezier(.2, .7, .2, 1);
 }
 
@@ -53,7 +54,7 @@ body {
     overflow-x: hidden;
 }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 figure { margin: 0; }
 a { color: var(--navy-700); }
 a:hover { color: var(--navy-900); }
@@ -79,7 +80,7 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 }
 .r-skip:focus { clip-path: none; opacity: 1; }
 
-.r-container { padding-inline: var(--gutter); }
+.r-container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 
 .r-display { font-family: var(--font-display); }
 .r-mono { font-variant-numeric: tabular-nums; }
@@ -88,12 +89,12 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
     font-family: var(--font-display);
     font-weight: 900;
     font-size: var(--step-head);
-    line-height: .95;
-    letter-spacing: -.03em;
+    line-height: 1.02;
+    letter-spacing: -.025em;
     color: var(--navy-900);
 }
 
-.r-lead { font-size: var(--step-body); line-height: 1.6; color: var(--muted); }
+.r-lead { font-size: var(--step-body); line-height: 1.6; color: var(--muted); max-width: 52ch; }
 
 /* ---------- Tombol: satu bentuk, sudut persegi ---------- */
 
@@ -182,155 +183,121 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 
 .r-nav__links { display: flex; align-items: center; gap: 32px; font-size: var(--step-small); font-weight: 500; }
 
-/* ---------- Panggung: judul terpasang, panel lewat di bawahnya ---------- */
 
-.r-stage { position: relative; background: var(--navy-900); color: #fff; }
-.r-stage > .r-nav { position: absolute; top: 0; left: 0; right: 0; }
+/* ---------- Hero ---------- */
 
-.r-stage__pin {
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    height: 100svh;
-    padding-top: 96px;
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
+.r-hero { position: relative; background: var(--navy-900); color: #fff; }
+
+.r-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+    padding-top: clamp(24px, 4vw, 56px);
+    padding-bottom: clamp(56px, 7vw, 104px);
 }
-.r-stage__title {
+
+.r-hero__title {
     font-family: var(--font-display);
     font-weight: 900;
     font-size: var(--step-display);
-    line-height: .85;
-    letter-spacing: -.03em;
-    color: var(--gold);
+    line-height: .9;
+    letter-spacing: -.035em;
 }
+.r-hero__title span { display: block; color: var(--gold); }
+.r-hero__theme { margin-top: 20px; font-size: var(--step-lead); font-weight: 700; line-height: 1.3; }
+.r-hero__lead { margin-top: 12px; max-width: 52ch; color: var(--navy-100); }
 
-.r-stage__panels { position: relative; z-index: 1; margin-top: -100svh; }
-
-.r-panel {
-    position: relative;
-    height: 100svh;
-    min-height: 640px;
+.r-hero__facts {
+    margin-top: 36px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 37vw minmax(0, 1fr);
-    gap: var(--gutter);
-    padding-inline: var(--gutter);
-    background: var(--navy-900);
-    overflow: hidden;
-}
-.r-panel--1 { background: var(--navy-950); }
-.r-panel--2 { background: var(--navy-800); }
-
-.r-panel__figure {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: end;
-    height: calc(100% - 96px - var(--step-display) * .85 - 32px);
-    overflow: hidden;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
     background: var(--navy-800);
 }
-.r-panel__figure img { width: 100%; height: 100%; object-fit: cover; }
+.r-hero__facts > div { padding: 16px 18px; background: var(--navy-950); }
+.r-hero__facts dt { font-size: var(--step-small); color: var(--navy-300); }
+.r-hero__facts dd { margin-top: 4px; font-weight: 700; line-height: 1.35; }
+.r-hero__facts dd span { display: block; font-weight: 400; font-size: var(--step-small); color: var(--navy-200); }
 
-.r-panel__left, .r-panel__right {
-    grid-row: 1;
-    align-self: end;
-    padding-bottom: 40px;
-}
-.r-panel__left { grid-column: 1; max-width: 30ch; }
-.r-panel__right { grid-column: 3; justify-self: end; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; text-align: right; max-width: 30ch; }
+.r-hero__actions { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.r-hero__status { font-size: var(--step-small); color: var(--navy-200); }
+.r-hero__status--closed { font-size: var(--step-lead); font-weight: 700; color: #fff; }
 
-.r-panel__theme { font-size: var(--step-body); font-weight: 700; color: #fff; }
-.r-panel__when {
-    margin-top: 14px;
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: var(--step-lead);
-    line-height: 1.15;
-    letter-spacing: -.01em;
-    color: #fff;
-}
-.r-panel__text { margin-top: 14px; font-size: var(--step-body); color: var(--navy-100); }
-.r-panel__status { font-size: var(--step-small); color: var(--navy-100); }
-.r-panel__closed { font-family: var(--font-display); font-weight: 900; font-size: var(--step-lead); color: #fff; }
-.r-panel__caption { font-size: var(--step-small); color: var(--navy-300); }
-.r-panel__statement {
-    font-size: var(--step-lead);
-    line-height: 1.3;
-    color: #fff;
-    max-width: 22ch;
-}
+.r-hero__media img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: var(--navy-800); }
+.r-hero__media figcaption { margin-top: 10px; font-size: var(--step-small); color: var(--navy-300); }
 
-/* ---------- Materi: susunan acara pada satu ukuran ---------- */
+/* ---------- Sections ---------- */
 
-.r-programme { background: var(--paper); padding-block: var(--section); }
-.r-programme__meta { margin-top: 20px; font-size: var(--step-lead); color: var(--navy-700); font-weight: 500; }
+.r-section { padding-block: var(--section); }
+.r-section--tint { background: var(--tint); }
+.r-section--navy { background: var(--navy-900); color: #fff; }
+.r-section--navy .r-h2 { color: #fff; }
+.r-section--navy .r-lead { color: var(--navy-100); }
 
-.r-lineup { list-style: none; margin: 72px 0 0; padding: 0; display: flex; flex-direction: column; gap: 40px; }
-.r-lineup__row {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--gutter);
-    align-items: baseline;
-}
-.r-lineup__title, .r-lineup__text {
-    font-family: var(--font-body);
-    font-size: var(--step-lead);
-    line-height: 1.3;
-    font-weight: 500;
-}
-.r-lineup__title { color: var(--navy-900); font-weight: 700; }
-.r-lineup__text { color: var(--muted); }
+.r-section__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; }
+.r-section__head .r-lead { max-width: 46ch; }
 
+.r-split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+.r-split__head .r-lead { margin-top: 16px; }
+
+/* Materi */
+.r-sessions { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.r-session { padding: 22px 24px; background: var(--card); }
+.r-session h3 { font-family: var(--font-display); font-weight: 900; font-size: var(--step-lead); letter-spacing: -.01em; color: var(--navy-900); }
+.r-session p { margin-top: 6px; color: var(--muted); }
+
+/* Pembicara */
 .r-speaker {
-    margin-top: var(--section);
+    margin-top: clamp(48px, 6vw, 80px);
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--gutter);
-    align-items: end;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+    padding: clamp(28px, 4vw, 48px);
+    background: var(--navy-900);
+    color: #fff;
 }
-.r-speaker__body { grid-column: 1 / -1; max-width: 1100px; }
-.r-speaker--photo .r-speaker__body { grid-column: 2; }
-.r-speaker__media { grid-column: 1; aspect-ratio: 4 / 5; overflow: hidden; background: var(--tint); }
+.r-speaker--photo { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+.r-speaker__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--navy-800); }
 .r-speaker__media img { width: 100%; height: 100%; object-fit: cover; }
+.r-speaker__label { font-size: var(--step-small); color: var(--navy-300); }
 .r-speaker__name {
+    margin-top: 6px;
     font-family: var(--font-display);
     font-weight: 900;
     font-size: var(--step-head);
-    line-height: .95;
-    letter-spacing: -.03em;
-    color: var(--navy-900);
+    line-height: 1.02;
+    letter-spacing: -.025em;
 }
-.r-speaker__role { margin-top: 20px; font-size: var(--step-lead); font-weight: 500; color: var(--navy-700); }
-.r-speaker__bio { margin-top: 16px; max-width: 60ch; font-size: var(--step-body); line-height: 1.6; color: var(--ink); }
-.r-speaker__quote { margin-top: 28px; font-size: var(--step-lead); line-height: 1.3; color: var(--muted); }
+.r-speaker__role { margin-top: 12px; font-size: var(--step-lead); font-weight: 500; color: var(--gold); }
+.r-speaker__bio { margin-top: 14px; max-width: 62ch; color: var(--navy-100); }
+.r-speaker__quote { margin-top: 20px; font-size: var(--step-lead); line-height: 1.35; color: var(--navy-100); }
 
-/* ---------- Cara daftar: satu kata kerja per layar ---------- */
-
-.r-verbs__list { list-style: none; margin: 0; padding: 0; }
-.r-verb {
-    min-height: 72svh;
-    align-items: center;
+/* Cara daftar */
+.r-register { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.r-steps { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 28px; counter-reset: step; }
+.r-step { position: relative; padding-left: 64px; counter-increment: step; }
+.r-step::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 44px;
+    height: 44px;
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--gutter);
-    padding: clamp(72px, 9vw, 140px) var(--gutter);
-}
-.r-verb__word {
+    place-items: center;
+    background: var(--navy-900);
+    color: var(--gold);
     font-family: var(--font-display);
     font-weight: 900;
-    font-size: var(--step-display);
-    line-height: .85;
-    letter-spacing: -.03em;
+    font-size: 20px;
+    border-radius: 999px;
 }
-.r-verb__body { display: flex; flex-direction: column; gap: 28px; }
-.r-verb__text { font-size: var(--step-lead); line-height: 1.3; max-width: 26ch; }
-
-.r-verb--paper { background: var(--tint); color: var(--navy-900); }
-.r-verb--gold { background: var(--gold); color: var(--navy-900); }
-.r-verb--navy { background: var(--navy-900); color: #fff; }
-.r-verb--navy .r-verb__text { color: var(--navy-100); }
-.r-verb--tint { background: var(--paper); color: var(--navy-900); }
+.r-step h3 { font-family: var(--font-display); font-weight: 900; font-size: var(--step-lead); letter-spacing: -.01em; color: var(--navy-900); }
+.r-step p { margin-top: 6px; color: var(--muted); max-width: 52ch; }
+.r-register__side { display: flex; flex-direction: column; gap: 28px; }
+.r-section--tint .r-ticket { --notch: var(--tint); }
 
 /* Rekening */
 .r-bank {
@@ -403,57 +370,31 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 .r-ticket__price span:first-child { font-size: var(--step-small); color: var(--muted); }
 .r-ticket__price span:last-child { font-family: var(--font-display); font-size: var(--step-lead); font-weight: 900; color: var(--navy-900); }
 
-/* ---------- Lokasi: nama ruangan sebagai huruf besar ---------- */
 
-.r-venue { background: var(--navy-950); color: #fff; }
-.r-venue__inner {
-    min-height: 100svh;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 48px;
-    padding-block: clamp(72px, 8vw, 120px) 56px;
-}
-.r-venue__intro { font-size: var(--step-lead); line-height: 1.3; max-width: 26ch; color: var(--navy-100); }
-.r-venue__name {
-    align-self: end;
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: var(--step-display);
-    line-height: .88;
-    letter-spacing: -.035em;
-}
-.r-venue__name a { color: #fff; text-decoration: none; transition: color .2s ease; }
-.r-venue__name a:hover, .r-venue__name a:focus-visible { color: var(--gold); }
-.r-venue__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
-.r-venue__facts { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); gap: 18px 56px; }
+/* ---------- Lokasi ---------- */
+
+.r-venue { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: stretch; }
+.r-venue__info .r-lead { margin-top: 16px; }
+.r-venue__facts { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 32px; }
 .r-venue__facts dt { font-size: var(--step-small); color: var(--navy-300); }
-.r-venue__facts dd { margin-top: 2px; font-size: var(--step-body); font-weight: 500; max-width: 34ch; }
-.r-venue__links { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; font-size: var(--step-body); font-weight: 500; }
-.r-venue__links .r-link { color: #fff; }
+.r-venue__facts dd { margin-top: 2px; font-weight: 700; }
+.r-venue__links { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+.r-map { min-height: 380px; background: var(--navy-800); }
+.r-map iframe { display: block; width: 100%; height: 100%; min-height: 380px; border: 0; }
 
-/* ---------- FAQ: pertanyaan di samping gambar tinggi ---------- */
+/* ---------- FAQ ---------- */
 
-.r-faq { background: var(--paper); }
-.r-faq__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: clamp(32px, 6vw, 120px);
-    padding-bottom: 80px;
-}
-.r-faq__main { padding-top: var(--section); }
-
-.r-faq__list { margin-top: 40px; display: flex; flex-direction: column; gap: 28px; }
-.r-faq__item { interpolate-size: allow-keywords; }
+.r-faq { display: flex; flex-direction: column; gap: 4px; }
+.r-faq__item { background: var(--card); interpolate-size: allow-keywords; }
 .r-faq__item summary {
     list-style: none;
-    min-height: 44px;
+    min-height: 64px;
+    padding: 18px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     cursor: pointer;
-    font-size: var(--step-lead);
-    line-height: 1.25;
     font-weight: 700;
     color: var(--ink);
     transition: color .2s ease;
@@ -462,7 +403,7 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 .r-faq__item summary:hover { color: var(--navy-700); }
 .r-faq__chevron { flex: none; transition: transform .3s var(--ease-out); }
 .r-faq__item[open] .r-faq__chevron { transform: rotate(180deg); }
-.r-faq__item p { margin-top: 10px; max-width: 56ch; color: var(--muted); line-height: 1.6; }
+.r-faq__item p { padding: 0 24px 22px; max-width: 64ch; color: var(--muted); }
 
 .r-faq__item::details-content {
     block-size: 0;
@@ -471,98 +412,30 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 }
 .r-faq__item[open]::details-content { block-size: auto; }
 
-.r-faq__actions { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px; }
+/* ---------- CTA ---------- */
 
-.r-faq__media { position: relative; }
-.r-faq__tall { aspect-ratio: 3 / 4; overflow: hidden; }
-.r-faq__tall img, .r-faq__square img { width: 100%; height: 100%; object-fit: cover; }
-.r-faq__square {
-    position: absolute;
-    left: -40px;
-    bottom: -40px;
-    width: 34%;
-    aspect-ratio: 1;
-    overflow: hidden;
-    background: #fff;
-}
+.r-cta { background: var(--gold); color: var(--navy-900); }
+.r-cta__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 48px; padding-block: clamp(56px, 7vw, 96px); }
+.r-cta h2 { font-family: var(--font-display); font-weight: 900; font-size: var(--step-head); line-height: 1.02; letter-spacing: -.025em; max-width: 18ch; }
+.r-cta p { margin-top: 12px; font-weight: 500; }
 
-/* ---------- CTA: satu kata adalah tombolnya ---------- */
-
-.r-band {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: 1fr auto;
-    min-height: 60svh;
-    margin-top: 80px;
-    padding: 32px var(--gutter) 24px;
-    background: var(--gold);
-    color: var(--navy-900);
-    text-decoration: none;
-    overflow: hidden;
-}
-.r-band:hover, .r-band:focus-visible { background: var(--navy-900); color: var(--gold); }
-.r-band:focus-visible { outline-offset: -6px; }
-.r-band__note { font-size: var(--step-lead); line-height: 1.3; max-width: 26ch; font-weight: 500; }
-.r-band__arrow { justify-self: end; transition: transform .3s var(--ease-out); }
-.r-band:hover .r-band__arrow { transform: translate(6px, -6px); }
-.r-band__word {
-    grid-column: 1 / -1;
-    align-self: end;
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: clamp(6rem, 27vw, 30rem);
-    line-height: .78;
-    letter-spacing: -.045em;
-}
-.r-band--closed { background: var(--navy-800); color: var(--navy-200); }
-.r-band--closed:hover { background: var(--navy-800); color: var(--navy-200); }
-
-/* ---------- Footer: nama dulu, tempat di bawahnya ---------- */
+/* ---------- Footer ---------- */
 
 .r-footer { background: var(--navy-950); color: var(--navy-200); font-size: var(--step-small); }
-.r-footer .r-container { padding-block: 56px 32px; }
-.r-footer__name {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: var(--step-display);
-    line-height: .8;
-    letter-spacing: -.035em;
-    color: #fff;
-}
-.r-footer__row {
-    margin-top: 72px;
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--gutter);
-    align-items: start;
-}
-.r-footer__places, .r-footer__links { list-style: none; padding: 0; }
-.r-footer__places { display: flex; flex-direction: column; gap: 6px; }
-.r-footer__places a {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: var(--step-lead);
-    color: var(--gold);
-    text-decoration: none;
-    transition: color .2s ease;
-}
-.r-footer__places a:hover { color: #fff; }
-.r-footer__links { display: grid; grid-template-columns: repeat(2, max-content); gap: 10px 48px; font-size: var(--step-body); }
-.r-footer__credits { margin-top: 72px; max-width: 62ch; color: var(--navy-300); line-height: 1.6; }
+.r-footer .r-container { padding-block: 48px; }
+.r-footer__row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 24px 48px; }
+.r-footer__brand strong { display: block; font-family: var(--font-display); font-weight: 900; font-size: var(--step-lead); color: #fff; }
+.r-footer__brand p { margin-top: 4px; }
+.r-footer__links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: var(--step-body); }
+.r-footer__credits { margin-top: 32px; max-width: 80ch; color: var(--navy-300); }
 .r-footer__credits a { color: var(--navy-200); }
 .r-footer__credits a:hover { color: #fff; }
-.r-footer__legal { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; }
-.r-footer__legal strong { color: #fff; font-weight: 700; }
-
-/* Tombol daftar yang menempel di layar ponsel */
-.r-dock { display: none; }
+.r-footer__legal { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; color: var(--navy-300); }
 
 /* ---------- Halaman formulir pendaftaran ---------- */
 
-.r-hero { position: relative; background: var(--navy-900); color: #fff; }
 
-.r-page-head .r-container:not(.r-nav) { max-width: 1320px; margin-inline: auto; padding-bottom: 72px; }
+.r-page-head .r-container:not(.r-nav) { padding-bottom: 72px; }
 .r-page-head__body { padding-top: 40px; max-width: 760px; }
 .r-page-head h1 {
     margin-top: 18px;
@@ -581,8 +454,6 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
     flex-wrap: wrap;
     gap: 24px;
     align-items: flex-start;
-    max-width: 1320px;
-    margin-inline: auto;
     margin-top: -40px;
     padding-bottom: 100px;
     position: relative;
@@ -748,29 +619,26 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 .r-state__code strong { font-family: var(--font-display); font-size: 26px; color: var(--navy-900); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
 .r-state__actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 
+
 /* ---------- Gerak ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
     .r-rise { animation: r-rise .8s var(--ease-out) both; }
-    .r-d1 { animation-delay: .1s; }
-    .r-d2 { animation-delay: .18s; }
-    .r-d3 { animation-delay: .26s; }
-    .r-d4 { animation-delay: .34s; }
+    .r-d1 { animation-delay: .05s; }
+    .r-d2 { animation-delay: .15s; }
+    .r-d3 { animation-delay: .25s; }
+    .r-d4 { animation-delay: .35s; }
     .r-d5 { animation-delay: .5s; }
 
-    .r-stage__title { animation: r-rise 1s var(--ease-out) both; }
-    .r-drift { animation: r-drift 24s ease-in-out infinite alternate; transform-origin: 70% 40%; }
     .r-pop { animation: r-pop .6s var(--ease-out) both; }
     .r-error { animation: r-shake-in .28s var(--ease-out) both; }
 
     html.r-reveal-ready [data-reveal] {
         opacity: 0;
-        transform: translate3d(0, 24px, 0);
-        transition: opacity .7s var(--ease-out) var(--reveal-delay, 0ms), transform .7s var(--ease-out) var(--reveal-delay, 0ms);
+        transform: translate3d(0, 20px, 0);
+        transition: opacity .6s var(--ease-out) var(--reveal-delay, 0ms), transform .6s var(--ease-out) var(--reveal-delay, 0ms);
     }
     html.r-reveal-ready [data-reveal].is-revealed { opacity: 1; transform: none; }
-
-    .r-ticket__row--holder dd { transition: color .2s ease; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -779,84 +647,27 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
     .r-spinner { animation-duration: 1.4s; }
 }
 
-@keyframes r-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-@keyframes r-drift { from { transform: scale(1); } to { transform: scale(1.08) translate3d(-1.5%, 1%, 0); } }
+@keyframes r-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes r-spin { to { transform: rotate(360deg); } }
 @keyframes r-pop { from { opacity: 0; transform: translate3d(0, 20px, 0) scale(.98); } to { opacity: 1; transform: none; } }
 @keyframes r-shake-in { from { opacity: 0; transform: translate3d(0, -4px, 0); } to { opacity: 1; transform: none; } }
 
-/* ---------- Layar sempit: komposisi sendiri ---------- */
+/* ---------- Layar sempit ---------- */
 
-@media (max-width: 1100px) {
-    .r-panel { grid-template-columns: minmax(0, 1fr) 42vw; }
-    .r-panel__figure { grid-column: 2; grid-row: 1 / span 2; }
-    .r-panel__left { grid-column: 1; grid-row: 1; }
-    .r-panel__right { grid-column: 1; grid-row: 2; justify-self: start; align-items: flex-start; text-align: left; padding-bottom: 40px; }
-    .r-panel__left { padding-bottom: 0; }
+@media (max-width: 960px) {
+    .r-hero__grid, .r-split, .r-register, .r-venue, .r-speaker--photo { grid-template-columns: minmax(0, 1fr); }
+    .r-hero__media { max-width: 420px; }
+    .r-speaker__media { max-width: 280px; }
 }
 
 @media (max-width: 820px) {
-    .r-nav__links, .r-nav__cta { display: none; }
-
-    .r-stage__pin {
-        position: static;
-        height: auto;
-        padding: 60px var(--gutter) 10px;
-        justify-content: flex-start;
-    }
-    .r-stage__title { font-size: 21vw; }
-    .r-stage__panels { margin-top: 0; }
-
-    .r-panel {
-        height: auto;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        padding-block: 8px 56px;
-    }
-    .r-panel--hero { padding-top: 16px; }
-    .r-panel__figure { order: 2; height: auto; aspect-ratio: 4 / 5; }
-    .r-panel--hero .r-panel__figure { aspect-ratio: 4 / 3; max-height: 46svh; }
-    .r-panel__left { order: 1; padding-bottom: 0; max-width: none; }
-    .r-panel__right { order: 3; align-self: stretch; align-items: flex-start; text-align: left; padding-bottom: 0; max-width: none; }
-    .r-panel--hero .r-panel__left { order: 1; }
-
-    .r-lineup__row, .r-speaker, .r-faq__grid, .r-footer__row { grid-template-columns: minmax(0, 1fr); }
-    .r-lineup { gap: 28px; }
-    .r-lineup__row { gap: 6px; }
-    .r-speaker--photo .r-speaker__body, .r-speaker__media { grid-column: 1; }
-    .r-speaker__media { width: 72%; }
-
-    .r-verb { grid-template-columns: minmax(0, 1fr); min-height: 0; gap: 32px; }
-    .r-verb__word { position: static; font-size: 24vw; }
-
-    .r-venue__inner { min-height: 86svh; }
-    .r-venue__name { font-size: 15vw; }
+    .r-nav__links { display: none; }
+    .r-hero__facts { grid-template-columns: minmax(0, 1fr); }
+    .r-hero__actions .r-btn { width: 100%; }
     .r-venue__facts { grid-template-columns: minmax(0, 1fr); }
-    .r-venue__links { align-items: flex-start; }
-
-    .r-faq__media { order: -1; margin-top: 72px; margin-bottom: 40px; }
-    .r-faq__tall { aspect-ratio: 4 / 5; }
-    .r-faq__square { left: auto; right: -8px; bottom: -32px; width: 38%; }
-    .r-faq__main { padding-top: 0; }
-    .r-faq__actions .r-btn { width: 100%; }
-
-    .r-band { min-height: 46svh; }
-    .r-band__arrow { width: 32px; height: 32px; }
-
-    .r-footer__name { font-size: 23vw; }
-    .r-footer__row { margin-top: 48px; gap: 40px; }
-
-    .r-dock {
-        display: inline-flex;
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 20;
-        outline: 3px solid var(--navy-950);
-        transition: transform .25s var(--ease-out), opacity .25s ease, background-color .2s ease;
-    }
-    .r-dock[data-hidden] { opacity: 0; transform: translateY(16px); pointer-events: none; }
-    body:has(.r-dock) .r-footer { padding-bottom: 80px; }
+    .r-cta__inner .r-btn { width: 100%; }
+    .r-step { padding-left: 56px; }
+    .r-step::before { width: 40px; height: 40px; font-size: 18px; }
+    .r-session, .r-faq__item summary { padding-inline: 18px; }
+    .r-faq__item p { padding-inline: 18px; }
 }

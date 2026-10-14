@@ -127,6 +127,6 @@ class LandingPageTest extends TestCase
         $this->get(route('home'))
             ->assertSee('data-ticket-name', false)
             ->assertDontSee('data-ticket-link', false)
-            ->assertSee('Ditutup');
+            ->assertSee('Pendaftaran ditutup.');
     }
 }

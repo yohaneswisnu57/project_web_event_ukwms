@@ -92,19 +92,4 @@
 
         holder.setAttribute('data-empty', '');
     }
-
-    /* Tombol daftar di ponsel disembunyikan selama tombol daftar lain sudah terlihat. */
-    var dock = document.querySelector('.r-dock');
-    var visibleTargets = new Set();
-
-    if (dock && 'IntersectionObserver' in window) {
-        var dockObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) { visibleTargets.add(entry.target); } else { visibleTargets.delete(entry.target); }
-            });
-            dock.toggleAttribute('data-hidden', visibleTargets.size > 0);
-        });
-
-        document.querySelectorAll('.r-panel--hero .r-btn, .r-band, .r-try .r-btn').forEach(function (el) { dockObserver.observe(el); });
-    }
 })();
