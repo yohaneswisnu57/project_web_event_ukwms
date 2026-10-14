@@ -2,7 +2,7 @@
     @if($submitted)
         {{-- Success State --}}
         <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
-            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-[#FAC43A]/20 animate-in fade-in zoom-in duration-700">
+            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-[#FAC43A]/20 wm-pop">
                 <div class="w-24 h-24 bg-[#FAC43A] rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-lg shadow-[#FAC43A]/30">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -32,7 +32,7 @@
     @elseif($isClosed)
         {{-- Closed State --}}
         <section class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
-            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-rose-100 animate-in fade-in zoom-in duration-700">
+            <div class="max-w-xl w-full bg-white rounded-[3rem] p-12 text-center shadow-2xl border border-rose-100 wm-pop">
                 <div class="w-24 h-24 bg-rose-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-lg shadow-rose-500/30">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -50,101 +50,85 @@
         {{-- Landing Page + Form --}}
         
         {{-- Section 1: Hero --}}
-        <section class="relative bg-white pt-16 md:pt-0" 
-                 x-data="{ 
-                    active: 0,
-                    images: [
-                        '/images/hero-banner.webp'
-                    ]
-                 }">
-            
-            {{-- Hero Background / Image Container --}}
-            <div class="relative w-full overflow-hidden">
-                <template x-for="(image, index) in images" :key="index">
-                    <div x-show="active === index" 
-                         x-transition:enter="transition ease-out duration-1000"
-                         x-transition:enter-start="opacity-0 scale-105"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         class="w-full">
-                        <img :src="image" class="w-full h-auto object-contain">
-                    </div>
-                </template>
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/20"></div>
-            </div>
+        @include('partials.landing.hero')
 
-            <div class="container mx-auto px-6 relative z-10 text-center py-8 md:py-16">
-                <h1 class="text-3xl md:text-6xl font-black text-slate-900 leading-tight tracking-tighter mb-8 drop-shadow-sm">
-                    SELAMAT DATANG<br><span class="text-[#FAC43A]">{{ Str::upper($invitation->name) }}</span>
-                </h1>
-                
+        {{-- Sapaan undangan + CTA --}}
+        <section class="bg-paper">
+            <div class="max-w-4xl mx-auto px-6 text-center py-14 md:py-20" data-reveal-group>
+                <p data-reveal wire:ignore.self class="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-wm-red mb-4">Selamat datang</p>
+                <h1 data-reveal wire:ignore.self class="font-display text-4xl md:text-6xl leading-[1.05] text-balance mb-10">{{ $invitation->name }}</h1>
 
-                <a href="#register" class="px-12 py-5 bg-[#FAC43A] text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e5b334] transition-all shadow-xl shadow-[#FAC43A]/30 w-full sm:w-auto inline-block">
-                    Konfirmasi Kehadiran
-                </a>
+                <div data-reveal wire:ignore.self>
+                    <a href="#register" class="inline-block w-full sm:w-auto px-12 py-5 bg-wm-yellow text-ink font-semibold uppercase tracking-[0.16em] hover:bg-ink hover:text-white transition-colors duration-300">
+                        Konfirmasi Kehadiran
+                    </a>
+                </div>
             </div>
         </section>
 
+        @include('partials.landing.event-details')
+
         {{-- Section 2: Registration Form --}}
-        <section id="register" class="py-32 bg-slate-50 scroll-mt-20">
+        <section id="register" class="py-20 md:py-28 bg-paper scroll-mt-20">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
-                    <div class="bg-white rounded-[3rem] shadow-xl overflow-hidden border border-slate-100">
-                        <div class="p-12 md:p-16">
+                    <div data-reveal="slow" wire:ignore.self class="bg-white overflow-hidden border border-ink/10 border-t-4 border-t-wm-red">
+                        <div class="p-8 md:p-16">
                             <div class="text-center mb-12">
-                                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Formulir Kehadiran</h2>
-                                <i style="color: red;">*Undangan hanya berlaku untuk 1 orang*</i>
+                                <h2 class="font-display text-4xl md:text-5xl text-ink mb-4">Formulir Kehadiran</h2>
+                                <p class="text-sm font-semibold text-wm-red mb-1">Undangan hanya berlaku untuk 1 orang.</p>
                                 <p class="text-slate-500">Mohon lengkapi data diri Anda di bawah ini.</p>
-                                <div class="w-12 h-1 bg-[#FAC43A] mx-auto rounded-full mt-4"></div>
+                                <div class="w-12 h-1 bg-wm-yellow mx-auto mt-4"></div>
                             </div>
 
                             <form wire:submit.prevent="submit" class="space-y-8">
                                 {{-- Primary Attendee Details --}}
-                                <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                                <div class="p-6 md:p-8 bg-paper">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Nama Lengkap</label>
                                             <input type="text" wire:model="attendees.0.name" 
-                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   class="w-full bg-white border-2 border-ink/10 px-5 py-4 focus:border-wm-yellow focus:shadow-[0_0_0_4px_rgba(250,196,58,0.25)] focus:ring-0 transition duration-200 outline-none"
                                                    placeholder="Masukkan nama lengkap...">
-                                            @error('attendees.0.name') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                            @error('attendees.0.name') <span class="wm-err text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Email</label>
                                             <input type="email" wire:model="attendees.0.email" 
-                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   class="w-full bg-white border-2 border-ink/10 px-5 py-4 focus:border-wm-yellow focus:shadow-[0_0_0_4px_rgba(250,196,58,0.25)] focus:ring-0 transition duration-200 outline-none"
                                                    placeholder="email@example.com">
-                                            @error('attendees.0.email') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                            @error('attendees.0.email') <span class="wm-err text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Nomor WhatsApp</label>
                                             <input type="text" wire:model="attendees.0.phone" 
-                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   class="w-full bg-white border-2 border-ink/10 px-5 py-4 focus:border-wm-yellow focus:shadow-[0_0_0_4px_rgba(250,196,58,0.25)] focus:ring-0 transition duration-200 outline-none"
                                                    placeholder="081234567890">
-                                            @error('attendees.0.phone') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                            @error('attendees.0.phone') <span class="wm-err text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Jabatan / Instansi</label>
                                             <input type="text" wire:model="attendees.0.position" 
-                                                   class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-[#FAC43A] focus:ring-0 transition-all outline-none"
+                                                   class="w-full bg-white border-2 border-ink/10 px-5 py-4 focus:border-wm-yellow focus:shadow-[0_0_0_4px_rgba(250,196,58,0.25)] focus:ring-0 transition duration-200 outline-none"
                                                    placeholder="Contoh: CEO di PT Maju Mundur">
-                                            @error('attendees.0.position') <span class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                                            @error('attendees.0.position') <span class="wm-err text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="flex flex-col items-center pt-8">
                                     @error('registration_limit')
-                                        <div class="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl text-xs font-bold text-center mb-6 w-full">
+                                        <div class="wm-err bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 text-xs font-bold text-center mb-6 w-full">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                     <button type="submit" wire:loading.attr="disabled"
-                                            class="w-full md:w-auto px-16 py-6 bg-[#FAC43A] text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e5b334] transition-all shadow-xl shadow-[#FAC43A]/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                                            class="w-full md:w-auto px-16 py-5 bg-wm-yellow text-ink font-semibold uppercase tracking-[0.16em] hover:bg-ink hover:text-white transition duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                                         <span wire:loading.remove>Konfirmasi Kehadiran</span>
                                         <span wire:loading>Memproses...</span>
                                     </button>
-                                    <p class="text-slate-400 text-xs mt-6 font-bold uppercase tracking-widest italic">
-                                        * Dengan mengklik tombol di atas, Anda menyatakan bersedia hadir dalam acara.
+                                    <p class="text-ink/50 text-xs mt-6 leading-relaxed text-center">
+                                        Dengan mengklik tombol di atas, Anda menyatakan bersedia hadir dalam acara.
                                     </p>
                                 </div>
                             </form>
@@ -155,9 +139,7 @@
         </section>        
 
         {{-- Footer --}}
-        <footer class="py-12 bg-slate-50 border-t border-slate-200 text-center">
-            <p class="text-[0.7rem] text-slate-400 uppercase tracking-widest font-bold">&copy; 2026 Universitas Katolik Widya Mandala Surabaya. All Rights Reserved.</p>
-        </footer>
+        @include('partials.landing.footer')
     @endif
 
     <script>

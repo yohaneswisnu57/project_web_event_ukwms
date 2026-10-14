@@ -9,9 +9,19 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --color-paper: #f1f0ee;
+            --color-ink: #121212;
+            --color-wm-red: #a8191f;
+            --color-wm-yellow: #FAC43A;
+        }
+    </style>
+    @include('partials.landing.motion-head')
     @livewireStyles
     
     <style>
@@ -41,7 +51,7 @@
         }
     </style>
 </head>
-<body class="antialiased min-h-screen text-slate-800 bg-[#f8fafc]">
+<body class="antialiased min-h-screen text-ink bg-paper">
     
     <div class="w-full">
         @isset($slot)
@@ -52,5 +62,6 @@
     </div>
 
     @livewireScripts
+    @include('partials.landing.motion-scripts')
 </body>
 </html>
