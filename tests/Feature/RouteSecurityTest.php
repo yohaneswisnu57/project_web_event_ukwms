@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Registration;
+use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
@@ -11,46 +11,29 @@ class RouteSecurityTest extends TestCase
 {
     use LazilyRefreshDatabase;
 
-    public function test_preview_email_is_not_available_outside_local_environment(): void
+    public function test_retired_wimates_routes_are_no_longer_available(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $this->get('/preview-email')->assertNotFound();
-
-        $this->assertDatabaseCount('invitations', 0);
-        $this->assertDatabaseCount('registrations', 0);
+        $this->get('/user-manual')->assertNotFound();
+        $this->get('/join/ANYCODE')->assertNotFound();
+        $this->get('/admin/invitations/template')->assertNotFound();
     }
 
-    public function test_preview_email_is_not_available_to_authenticated_users_outside_local_environment(): void
+    public function test_admin_panel_requires_authentication(): void
     {
-        $this->actingAs(User::factory()->create())
-            ->get('/preview-email')
-            ->assertNotFound();
+        $this->get('/admin')->assertRedirect(route('filament.admin.auth.login'));
     }
 
-    public function test_user_manual_requires_authentication(): void
+    public function test_legacy_check_in_url_does_not_change_participant_state(): void
     {
-        $this->get('/user-manual')->assertRedirect(route('login'));
-    }
-
-    public function test_user_manual_is_available_to_authenticated_users(): void
-    {
-        $this->actingAs(User::factory()->create())
-            ->get('/user-manual')
-            ->assertOk();
-    }
-
-    public function test_invitation_template_requires_authentication(): void
-    {
-        $this->get('/admin/invitations/template')->assertRedirect(route('login'));
-    }
-
-    public function test_legacy_check_in_url_no_longer_changes_registration_state(): void
-    {
-        $registration = Registration::factory()->create(['checked_in_at' => null]);
+        $participant = Participant::factory()->verified()->create();
 
         $this->actingAs(User::factory()->create())
-            ->get("/admin/check-in/{$registration->uuid}")
+            ->get("/admin/check-in/{$participant->uuid}")
             ->assertNotFound();
 
-        $this->assertNull($registration->fresh()->checked_in_at);
+        $this->assertNull($participant->fresh()->checked_in_at);
     }
 }

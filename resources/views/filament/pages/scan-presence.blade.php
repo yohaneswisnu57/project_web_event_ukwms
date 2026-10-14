@@ -87,8 +87,8 @@
                             <div style="width: 3.5rem; height: 3.5rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(12px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 15px 20px -5px rgba(0,0,0,0.1);" class="sm:w-16 sm:h-16 sm:mb-4 sm:rounded-2xl">
                                 <x-heroicon-o-user style="width: 1.5rem; height: 1.5rem; color: white;" class="sm:w-8 sm:h-8" />
                             </div>
-                            <h2 style="font-size: 1.5rem; font-weight: 900; color: white; letter-spacing: -0.025em; line-height: 1.2;" class="sm:text-3xl leading-tight">{{ $scannedRegistration->attendees->first()->name ?? $scannedRegistration->invitation->name }}</h2>
-                            <p style="margin-top: 0.4rem; font-size: 0.5rem; font-weight: 900; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.15em;" class="sm:text-[0.625rem] sm:mt-2 sm:tracking-[0.2em]">{{ $scannedRegistration->position ?? 'VIP GUEST' }}</p>
+                            <h2 style="font-size: 1.5rem; font-weight: 900; color: white; letter-spacing: -0.025em; line-height: 1.2;" class="sm:text-3xl leading-tight">{{ $scannedParticipant->full_name }}</h2>
+                            <p style="margin-top: 0.4rem; font-size: 0.5rem; font-weight: 900; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.15em;" class="sm:text-[0.625rem] sm:mt-2 sm:tracking-[0.2em]">{{ $scannedParticipant->origin->getLabel() }} · Angkatan {{ $scannedParticipant->cohort_year }}</p>
                         </div>
                     </div>
 
@@ -99,8 +99,8 @@
                                     <x-heroicon-o-building-office style="width: 1rem; height: 1rem;" class="sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <p style="font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8;" class="sm:text-[0.5625rem]">Instansi</p>
-                                    <p style="font-size: 0.875rem; font-weight: 700; color: #1e293b;" class="sm:text-base">{{ $scannedRegistration->invitation->name }}</p>
+                                    <p style="font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8;" class="sm:text-[0.5625rem]">Universitas / Fakultas</p>
+                                    <p style="font-size: 0.875rem; font-weight: 700; color: #1e293b;" class="sm:text-base">{{ $scannedParticipant->institution ?? 'UKWMS' }} · {{ $scannedParticipant->faculty }}</p>
                                 </div>
                             </div>
 
@@ -109,21 +109,21 @@
                                     <x-heroicon-o-identification style="width: 1rem; height: 1rem;" class="sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <p style="font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8;" class="sm:text-[0.5625rem]">Registration ID</p>
-                                    <p style="font-size: 0.875rem; font-weight: 700; color: #1e293b;" class="sm:text-base">#{{ str_pad($scannedRegistration->id, 6, '0', STR_PAD_LEFT) }}</p>
+                                    <p style="font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8;" class="sm:text-[0.5625rem]">Kode Peserta</p>
+                                    <p style="font-size: 0.875rem; font-weight: 700; color: #1e293b;" class="sm:text-base">{{ $scannedParticipant->code }}</p>
                                 </div>
                             </div>
                         </div>
 
-                        @if($scannedRegistration->checked_in_at)
+                        @if($scannedParticipant->checked_in_at)
                             <div style="padding: 1rem; background: #fff1f2; border-radius: 1rem; border: 1px solid #ffe4e6; display: flex; align-items: center; gap: 0.75rem;" class="sm:p-5">
                                 <x-heroicon-o-exclamation-triangle style="width: 1rem; height: 1rem; color: #f43f5e; flex-shrink: 0;" class="sm:w-5 sm:h-5" />
-                                <p style="color: #9f1239; font-size: 0.75rem; font-weight: 700;" class="sm:text-sm">Sudah check-in pada pukul {{ $scannedRegistration->checked_in_at->format('H:i') }} WIB</p>
+                                <p style="color: #9f1239; font-size: 0.75rem; font-weight: 700;" class="sm:text-sm">Sudah check-in pada pukul {{ $scannedParticipant->checked_in_at->format('H:i') }} WIB</p>
                             </div>
                         @endif
 
                         <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;" class="sm:gap-3">
-                            @if(! $scannedRegistration->checked_in_at)
+                            @if(! $scannedParticipant->checked_in_at)
                                 <x-filament::button 
                                     wire:click="confirmPresence" 
                                     color="gray"

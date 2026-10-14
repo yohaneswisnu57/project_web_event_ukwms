@@ -90,9 +90,8 @@ class ParticipantInfolist
                             ->view('filament.resources.participants.qr-code-entry')
                             ->hiddenLabel()
                             ->visible(fn (Participant $record): bool => $record->isVerified()),
-                        TextEntry::make('id')
+                        TextEntry::make('code')
                             ->label('Kode Peserta')
-                            ->formatStateUsing(fn (int $state): string => 'RETINA-'.str_pad($state, 4, '0', STR_PAD_LEFT))
                             ->weight('bold'),
                         TextEntry::make('checked_in_at')
                             ->label('Waktu Check-in')

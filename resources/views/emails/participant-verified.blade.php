@@ -13,7 +13,7 @@ Simpan **QR Code** di bawah ini dan tunjukkan kepada panitia saat registrasi ula
              alt="QR Code Tiket"
              style="width: 200px; height: 200px; border: 4px solid #e2e8f0; border-radius: 20px;">
     </div>
-    <p style="font-family: monospace; font-size: 14px; color: #1e293b; font-weight: bold; margin-top: 10px;">RETINA-{{ str_pad($participant->id, 4, '0', STR_PAD_LEFT) }}</p>
+    <p style="font-family: monospace; font-size: 14px; color: #1e293b; font-weight: bold; margin-top: 10px;">{{ $participant->code }}</p>
 </div>
 
 <x-mail::panel>

@@ -7,6 +7,7 @@ use App\Enums\ParticipantStatus;
 use Database\Factories\ParticipantFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -98,6 +99,16 @@ class Participant extends Model
     public function getRouteKeyName(): string
     {
         return 'uuid';
+    }
+
+    /**
+     * Kode peserta yang tercetak di tiket, contoh: RETINA-0007.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function code(): Attribute
+    {
+        return Attribute::get(fn (): string => 'RETINA-'.str_pad((string) $this->getKey(), 4, '0', STR_PAD_LEFT));
     }
 
     /**

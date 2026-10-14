@@ -15,9 +15,8 @@ class ParticipantExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('id')
-                ->label('Kode Peserta')
-                ->formatStateUsing(fn (int $state): string => 'RETINA-'.str_pad($state, 4, '0', STR_PAD_LEFT)),
+            ExportColumn::make('code')
+                ->label('Kode Peserta'),
             ExportColumn::make('full_name')
                 ->label('Nama Lengkap'),
             ExportColumn::make('email')
