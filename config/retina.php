@@ -10,6 +10,11 @@
 | backoffice (lihat Participant::SETTING_QUOTA dan SETTING_CLOSING_AT).
 | Nilai null membuat bagian terkait disembunyikan dari halaman.
 |
+| Pembicara (jabatan, bio, foto), materi, jam selesai, fasilitas, dan
+| narahubung hanyalah nilai awal: admin bisa mengubahnya di halaman
+| "Konten Landing Page", dan isian admin selalu didahulukan
+| (lihat App\Http\Middleware\ApplyLandingContent). Foto disimpan di disk public.
+|
 */
 
 return [

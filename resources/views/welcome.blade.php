@@ -3,6 +3,7 @@
 @use('App\Models\Participant')
 @use('Illuminate\Support\Number')
 @use('Illuminate\Support\Str')
+@use('Illuminate\Support\Facades\Storage')
 
 @php
     $fee = Number::currency(Participant::REGISTRATION_FEE, 'IDR', 'id', 0);
@@ -104,7 +105,7 @@
                             <circle cx="200" cy="250" r="70" fill="none" stroke="#2A54B0" stroke-width="1"/>
                         </svg>
                         @if (filled($speaker['photo']))
-                            <img src="{{ asset($speaker['photo']) }}" alt="Foto {{ $speaker['name'] }}" loading="lazy">
+                            <img src="{{ Storage::disk('public')->url($speaker['photo']) }}" alt="Foto {{ $speaker['name'] }}" loading="lazy">
                         @else
                             <span class="r-portrait__initials" aria-hidden="true">{{ Str::of($speaker['name'])->explode(' ')->map(fn (string $word): string => Str::substr($word, 0, 1))->take(2)->implode('') }}</span>
                         @endif
