@@ -25,7 +25,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->spa()
-            ->brandName('WIMATES LEADERS TALK')
+            ->brandName('RETINA 2026')
             ->id('admin')
             ->path('admin')
             ->profile()
