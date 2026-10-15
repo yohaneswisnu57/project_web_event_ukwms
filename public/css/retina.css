@@ -239,7 +239,7 @@ h1, h2, h3, p, dl, dd, ol, ul, blockquote { margin: 0; }
 .r-hero__status { font-size: var(--step-small); color: var(--muted); }
 .r-hero__status--closed { font-size: var(--step-lead); font-weight: 700; color: var(--brick-800); }
 
-.r-hero__media img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: var(--yellow-soft); }
+.r-hero__media img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; background: var(--yellow-soft); }
 .r-hero__media figcaption { margin-top: 10px; font-size: var(--step-small); color: var(--muted); }
 
 /* ---------- Sections ---------- */

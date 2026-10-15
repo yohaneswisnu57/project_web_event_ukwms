@@ -54,7 +54,7 @@
             </div>
 
             <figure class="r-hero__media r-rise r-d3">
-                <img src="{{ asset($heroImage['file']) }}" alt="{{ $heroImage['alt'] }}" width="720" height="900" fetchpriority="high">
+                <img src="{{ asset($heroImage['file']) }}" alt="{{ $heroImage['alt'] }}" width="1000" height="1000" fetchpriority="high">
                 <figcaption>{{ $heroImage['caption'] }}</figcaption>
             </figure>
         </div>
@@ -236,6 +236,6 @@
 
 @section('credits')
     <p class="r-footer__credits">
-        Foto: <a href="{{ $heroImage['source'] }}" target="_blank" rel="noopener">{{ $heroImage['caption'] }}</a> oleh {{ $heroImage['author'] }}, Wikimedia Commons, <a href="{{ $heroImage['license_url'] }}" target="_blank" rel="noopener">{{ $heroImage['license'] }}</a>. Dipotong dari berkas aslinya.
+        Foto: {{ $heroImage['caption'] }}, sumber <a href="{{ $heroImage['source'] }}" target="_blank" rel="noopener">{{ $heroImage['credit'] }}</a>.
     </p>
 @endsection

@@ -98,7 +98,7 @@ class LandingPageTest extends TestCase
         $this->get(route('home'))->assertSee('https://wa.me/6281234567890', false);
     }
 
-    public function test_hero_shows_the_campus_photo_with_its_license_credit(): void
+    public function test_hero_shows_the_campus_photo_with_its_source_credit(): void
     {
         $image = config('retina.hero_image');
 
@@ -108,9 +108,8 @@ class LandingPageTest extends TestCase
             ->assertOk()
             ->assertSee(asset($image['file']), false)
             ->assertSee($image['alt'])
-            ->assertSee($image['author'])
-            ->assertSee($image['source'], false)
-            ->assertSee($image['license_url'], false);
+            ->assertSee($image['credit'])
+            ->assertSee($image['source'], false);
     }
 
     public function test_ticket_preview_links_to_the_registration_form(): void

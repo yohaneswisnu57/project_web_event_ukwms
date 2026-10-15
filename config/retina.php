@@ -76,17 +76,15 @@ return [
 
     /*
     | Foto pembuka halaman depan: gedung Kampus Pakuwon City, tempat acara
-    | berlangsung. Lisensi CC BY-SA mewajibkan atribusi, jadi kreditnya tampil
-    | di footer. Fotonya dipotong ke rasio 4:5 dari berkas aslinya.
+    | berlangsung. Foto resmi dari situs UKWMS, dipotong persegi; sumbernya
+    | dicantumkan di footer.
     */
     'hero_image' => [
         'file' => 'images/retina/kampus-pakuwon-city.webp',
-        'alt' => 'Salah satu menara Kampus Pakuwon City Universitas Katolik Widya Mandala Surabaya dengan logo UKWMS di puncaknya',
+        'alt' => 'Gedung Kampus Pakuwon City Universitas Katolik Widya Mandala Surabaya dengan papan nama universitas dan taman di depannya',
         'caption' => 'Kampus Pakuwon City, Universitas Katolik Widya Mandala Surabaya',
-        'author' => 'TheodorusRadjaLudji',
-        'license' => 'CC BY-SA 4.0',
-        'license_url' => 'https://creativecommons.org/licenses/by-sa/4.0/',
-        'source' => 'https://commons.wikimedia.org/wiki/File:WM_Pakuwon.JPG',
+        'credit' => 'ukwms.ac.id',
+        'source' => 'https://ukwms.ac.id/ukwms-terapkan-pembelajaran-daring-1-6-september-2025/',
     ],
 
 ];
