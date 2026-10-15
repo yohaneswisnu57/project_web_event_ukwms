@@ -159,7 +159,7 @@
 
                     <div class="r-submit">
                         <p>Dengan mendaftar, kamu menyatakan data yang diisi sudah benar. Pendaftaran yang ditolak harus diulang dengan email lain.</p>
-                        <button type="submit" class="r-btn r-btn--yellow r-btn--lg" wire:loading.attr="disabled" wire:target="register,payment_proof">
+                        <button type="submit" class="r-btn r-btn--brick r-btn--lg" wire:loading.attr="disabled" wire:target="register,payment_proof">
                             <span wire:loading.remove wire:target="register">Kirim pendaftaran <span class="r-arrow" aria-hidden="true">→</span></span>
                             <span wire:loading.flex wire:target="register" style="align-items: center; gap: 10px"><span class="r-spinner" aria-hidden="true"></span> Mengirim…</span>
                         </button>

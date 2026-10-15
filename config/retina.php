@@ -81,7 +81,7 @@ return [
     */
     'hero_image' => [
         'file' => 'images/retina/kampus-pakuwon-city.webp',
-        'alt' => 'Dua menara Kampus Pakuwon City Universitas Katolik Widya Mandala Surabaya dengan atrium kaca di tengahnya',
+        'alt' => 'Salah satu menara Kampus Pakuwon City Universitas Katolik Widya Mandala Surabaya dengan logo UKWMS di puncaknya',
         'caption' => 'Kampus Pakuwon City, Universitas Katolik Widya Mandala Surabaya',
         'author' => 'TheodorusRadjaLudji',
         'license' => 'CC BY-SA 4.0',

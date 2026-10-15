@@ -13,7 +13,7 @@
     </div>
 
     @if ($showCta ?? true)
-        <a class="r-btn r-btn--yellow r-nav__cta" href="{{ route('registration') }}">Daftar <span class="r-arrow" aria-hidden="true">→</span></a>
+        <a class="r-btn r-btn--brick r-nav__cta" href="{{ route('registration') }}">Daftar <span class="r-arrow" aria-hidden="true">→</span></a>
     @elseif (! request()->routeIs('home'))
         <a class="r-btn r-btn--ghost" href="{{ route('home') }}">Beranda</a>
     @endif

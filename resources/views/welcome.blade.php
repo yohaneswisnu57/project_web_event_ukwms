@@ -37,7 +37,7 @@
 
                 <div class="r-hero__actions r-rise r-d4">
                     @if ($isRegistrationOpen)
-                        <a class="r-btn r-btn--yellow r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
+                        <a class="r-btn r-btn--brick r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
                         <p class="r-hero__status">
                             @if ($remainingQuota !== null)
                                 Pendaftaran dibuka · Sisa {{ $remainingQuota }} kursi
@@ -54,7 +54,7 @@
             </div>
 
             <figure class="r-hero__media r-rise r-d3">
-                <img src="{{ asset($heroImage['file']) }}" alt="{{ $heroImage['alt'] }}" width="960" height="1200" fetchpriority="high">
+                <img src="{{ asset($heroImage['file']) }}" alt="{{ $heroImage['alt'] }}" width="720" height="900" fetchpriority="high">
                 <figcaption>{{ $heroImage['caption'] }}</figcaption>
             </figure>
         </div>
@@ -150,7 +150,7 @@
         </section>
 
         {{-- ============ LOKASI ============ --}}
-        <section id="lokasi" class="r-section r-section--brick" aria-labelledby="lokasi-title">
+        <section id="lokasi" class="r-section" aria-labelledby="lokasi-title">
             <div class="r-container r-venue">
                 <div class="r-venue__info" data-reveal>
                     <h2 id="lokasi-title" class="r-h2">{{ config('retina.venue.room') }}</h2>
@@ -162,8 +162,8 @@
                     </dl>
 
                     <div class="r-venue__links">
-                        <a class="r-btn r-btn--yellow" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
-                        <a class="r-btn r-btn--ghost" href="{{ $calendarUrl }}" target="_blank" rel="noopener">Tambah ke Google Calendar</a>
+                        <a class="r-btn r-btn--brick" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
+                        <a class="r-btn r-btn--soft" href="{{ $calendarUrl }}" target="_blank" rel="noopener">Tambah ke Google Calendar</a>
                     </div>
                 </div>
 
@@ -178,7 +178,7 @@
         </section>
 
         {{-- ============ FAQ ============ --}}
-        <section id="faq" class="r-section" aria-labelledby="faq-title">
+        <section id="faq" class="r-section r-section--tint" aria-labelledby="faq-title">
             <div class="r-container r-split">
                 <div class="r-split__head" data-reveal>
                     <h2 id="faq-title" class="r-h2">Sebelum kamu daftar.</h2>
@@ -222,7 +222,7 @@
                         <h2>Kursi terbatas. Panggungnya menunggu.</h2>
                         <p>{{ $dateLabel }} · {{ config('retina.venue.room') }} · {{ $fee }}</p>
                     </div>
-                    <a class="r-btn r-btn--brick r-btn--lg" href="{{ route('registration') }}">Daftar sekarang <span class="r-arrow" aria-hidden="true">→</span></a>
+                    <a class="r-btn r-btn--yellow r-btn--lg" href="{{ route('registration') }}">Daftar sekarang <span class="r-arrow" aria-hidden="true">→</span></a>
                 @else
                     <div>
                         <h2>Pendaftaran ditutup.</h2>
