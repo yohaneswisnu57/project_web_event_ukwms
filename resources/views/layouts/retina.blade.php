@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? config('retina.name').' — '.config('retina.tagline') }}</title>
     <meta name="description" content="{{ config('retina.theme') }} — {{ config('retina.venue.room') }}, {{ config('retina.venue.campus') }}.">
-    <meta name="theme-color" content="#0B1F4B">
+    <meta name="theme-color" content="#BA3426">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ config('retina.name') }} — {{ config('retina.tagline') }}">
     <meta property="og:description" content="{{ config('retina.theme') }}">

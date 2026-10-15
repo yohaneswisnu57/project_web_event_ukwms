@@ -10,7 +10,7 @@
     $dateLabel = $startsAt->locale('id')->translatedFormat('l, j F Y');
     $timeLabel = $startsAt->format('H.i').($endsAt ? '–'.$endsAt->format('H.i') : '').' WIB';
     $speaker = config('retina.speaker');
-    $heroImage = config('retina.archive_images.lecon-clinique');
+    $heroImage = config('retina.hero_image');
     $mapsQuery = urlencode(config('retina.venue.maps_query'));
     $mapsUrl = 'https://www.google.com/maps/search/?api=1&query='.$mapsQuery;
     $whatsappUrl = filled(config('retina.contact.whatsapp'))
@@ -37,7 +37,7 @@
 
                 <div class="r-hero__actions r-rise r-d4">
                     @if ($isRegistrationOpen)
-                        <a class="r-btn r-btn--gold r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
+                        <a class="r-btn r-btn--yellow r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
                         <p class="r-hero__status">
                             @if ($remainingQuota !== null)
                                 Pendaftaran dibuka · Sisa {{ $remainingQuota }} kursi
@@ -141,7 +141,7 @@
                             <input id="ticket-name" class="r-input" type="text" maxlength="60" autocomplete="name" placeholder="Nama lengkap" data-ticket-name>
                             @include('partials.retina.ticket', ['startsAt' => $startsAt, 'showHolder' => true])
                             @if ($isRegistrationOpen)
-                                <a class="r-btn r-btn--navy" href="{{ route('registration') }}" data-ticket-link>Daftar dengan nama ini <span class="r-arrow" aria-hidden="true">→</span></a>
+                                <a class="r-btn r-btn--brick" href="{{ route('registration') }}" data-ticket-link>Daftar dengan nama ini <span class="r-arrow" aria-hidden="true">→</span></a>
                             @endif
                         </div>
                     </div>
@@ -150,7 +150,7 @@
         </section>
 
         {{-- ============ LOKASI ============ --}}
-        <section id="lokasi" class="r-section r-section--navy" aria-labelledby="lokasi-title">
+        <section id="lokasi" class="r-section r-section--brick" aria-labelledby="lokasi-title">
             <div class="r-container r-venue">
                 <div class="r-venue__info" data-reveal>
                     <h2 id="lokasi-title" class="r-h2">{{ config('retina.venue.room') }}</h2>
@@ -162,7 +162,7 @@
                     </dl>
 
                     <div class="r-venue__links">
-                        <a class="r-btn r-btn--gold" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
+                        <a class="r-btn r-btn--yellow" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
                         <a class="r-btn r-btn--ghost" href="{{ $calendarUrl }}" target="_blank" rel="noopener">Tambah ke Google Calendar</a>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
                         <h2>Kursi terbatas. Panggungnya menunggu.</h2>
                         <p>{{ $dateLabel }} · {{ config('retina.venue.room') }} · {{ $fee }}</p>
                     </div>
-                    <a class="r-btn r-btn--navy r-btn--lg" href="{{ route('registration') }}">Daftar sekarang <span class="r-arrow" aria-hidden="true">→</span></a>
+                    <a class="r-btn r-btn--brick r-btn--lg" href="{{ route('registration') }}">Daftar sekarang <span class="r-arrow" aria-hidden="true">→</span></a>
                 @else
                     <div>
                         <h2>Pendaftaran ditutup.</h2>
@@ -236,6 +236,6 @@
 
 @section('credits')
     <p class="r-footer__credits">
-        Gambar: <a href="{{ $heroImage['source'] }}" target="_blank" rel="noopener">{{ $heroImage['caption'] }}</a> ({{ $heroImage['license'] }}), lukisan arsip, bukan dokumentasi acara RETINA.
+        Foto: <a href="{{ $heroImage['source'] }}" target="_blank" rel="noopener">{{ $heroImage['caption'] }}</a> oleh {{ $heroImage['author'] }}, Wikimedia Commons, <a href="{{ $heroImage['license_url'] }}" target="_blank" rel="noopener">{{ $heroImage['license'] }}</a>. Dipotong dari berkas aslinya.
     </p>
 @endsection

@@ -33,7 +33,7 @@
                     </div>
                     <p>Simpan kode ini bila perlu menghubungi panitia.</p>
                     <div class="r-state__actions">
-                        <a class="r-btn r-btn--navy" href="{{ route('home') }}">Kembali ke beranda</a>
+                        <a class="r-btn r-btn--brick" href="{{ route('home') }}">Kembali ke beranda</a>
                     </div>
                 </section>
             @elseif (! $isRegistrationOpen)
@@ -51,7 +51,7 @@
                         Terima kasih atas antusiasmenya — sampai jumpa di kesempatan berikutnya.
                     </p>
                     <div class="r-state__actions">
-                        <a class="r-btn r-btn--navy" href="{{ route('home') }}">Kembali ke beranda</a>
+                        <a class="r-btn r-btn--brick" href="{{ route('home') }}">Kembali ke beranda</a>
                     </div>
                 </section>
             @else
@@ -102,7 +102,7 @@
 
                     <fieldset class="r-fieldset">
                         <legend><span class="r-mono">03</span><span class="r-display">Pembayaran</span></legend>
-                        <p class="r-lead" style="margin-top: 12px; font-size: 15px">Transfer <strong style="color: var(--navy-900)">{{ $fee }}</strong> ke rekening berikut, lalu unggah foto atau tangkapan layar bukti transfernya.</p>
+                        <p class="r-lead" style="margin-top: 12px; font-size: 15px">Transfer <strong style="color: var(--ink)">{{ $fee }}</strong> ke rekening berikut, lalu unggah foto atau tangkapan layar bukti transfernya.</p>
 
                         <div style="margin-top: 20px">
                             @include('partials.retina.bank', ['compact' => true])
@@ -159,7 +159,7 @@
 
                     <div class="r-submit">
                         <p>Dengan mendaftar, kamu menyatakan data yang diisi sudah benar. Pendaftaran yang ditolak harus diulang dengan email lain.</p>
-                        <button type="submit" class="r-btn r-btn--gold r-btn--lg" wire:loading.attr="disabled" wire:target="register,payment_proof">
+                        <button type="submit" class="r-btn r-btn--yellow r-btn--lg" wire:loading.attr="disabled" wire:target="register,payment_proof">
                             <span wire:loading.remove wire:target="register">Kirim pendaftaran <span class="r-arrow" aria-hidden="true">→</span></span>
                             <span wire:loading.flex wire:target="register" style="align-items: center; gap: 10px"><span class="r-spinner" aria-hidden="true"></span> Mengirim…</span>
                         </button>
@@ -181,7 +181,7 @@
                 @if ($isRegistrationOpen && ($remainingQuota !== null || $registrationClosesAt))
                     <p class="r-hint" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line)">
                         @if ($remainingQuota !== null)
-                            Sisa <strong style="color: var(--navy-900)">{{ $remainingQuota }} kursi</strong>.
+                            Sisa <strong style="color: var(--ink)">{{ $remainingQuota }} kursi</strong>.
                         @endif
                         @if ($registrationClosesAt)
                             Ditutup {{ $registrationClosesAt->locale('id')->translatedFormat('j F Y, H.i') }} WIB.

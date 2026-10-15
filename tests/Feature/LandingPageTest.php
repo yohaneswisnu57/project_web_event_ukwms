@@ -98,18 +98,19 @@ class LandingPageTest extends TestCase
         $this->get(route('home'))->assertSee('https://wa.me/6281234567890', false);
     }
 
-    public function test_archive_images_are_shown_with_their_credits(): void
+    public function test_hero_shows_the_campus_photo_with_its_license_credit(): void
     {
-        $response = $this->get(route('home'))->assertOk();
+        $image = config('retina.hero_image');
 
-        foreach (config('retina.archive_images') as $image) {
-            $this->assertFileExists(public_path($image['file']));
+        $this->assertFileExists(public_path($image['file']));
 
-            $response
-                ->assertSee(asset($image['file']), false)
-                ->assertSee($image['caption'])
-                ->assertSee($image['source'], false);
-        }
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee(asset($image['file']), false)
+            ->assertSee($image['alt'])
+            ->assertSee($image['author'])
+            ->assertSee($image['source'], false)
+            ->assertSee($image['license_url'], false);
     }
 
     public function test_ticket_preview_links_to_the_registration_form(): void
