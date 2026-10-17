@@ -10,7 +10,13 @@
     $dateLabel = $startsAt->locale('id')->translatedFormat('l, j F Y');
     $timeLabel = $startsAt->format('H.i').($endsAt ? '–'.$endsAt->format('H.i') : '').' WIB';
     $speaker = config('retina.speaker');
-    $heroImage = config('retina.hero_image');
+    $speakerPhotoUrl = match (true) {
+        filled($speaker['photo']) => Storage::disk('public')->url($speaker['photo']),
+        filled($speaker['photo_default'] ?? null) => asset($speaker['photo_default']),
+        default => null,
+    };
+    $banner = config('retina.banner');
+    $venueImage = config('retina.venue_image');
     $mapsQuery = urlencode(config('retina.venue.maps_query'));
     $mapsUrl = 'https://www.google.com/maps/search/?api=1&query='.$mapsQuery;
     $whatsappUrl = filled(config('retina.contact.whatsapp'))
@@ -18,26 +24,76 @@
         : null;
 @endphp
 
+@push('head')
+    @php
+        $eventSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Event',
+            'name' => config('retina.name').' — '.config('retina.tagline'),
+            'description' => config('retina.theme'),
+            'startDate' => $startsAt->copy()->setTimezone('Asia/Jakarta')->toIso8601String(),
+            'eventStatus' => 'https://schema.org/EventScheduled',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'image' => [asset($banner['file'])],
+            'location' => [
+                '@type' => 'Place',
+                'name' => config('retina.venue.room').', '.config('retina.venue.building'),
+                'address' => [
+                    '@type' => 'PostalAddress',
+                    'streetAddress' => config('retina.venue.address'),
+                    'addressLocality' => 'Surabaya',
+                    'addressCountry' => 'ID',
+                ],
+            ],
+            'organizer' => [
+                '@type' => 'CollegeOrUniversity',
+                'name' => config('retina.venue.campus'),
+                'url' => 'https://www.ukwms.ac.id',
+                'logo' => asset('images/retina/logo-ukwms.png'),
+            ],
+            'offers' => [
+                '@type' => 'Offer',
+                'price' => Participant::REGISTRATION_FEE,
+                'priceCurrency' => 'IDR',
+                'availability' => $isRegistrationOpen ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+            ],
+        ];
+
+        if ($isRegistrationOpen) {
+            $eventSchema['offers']['url'] = route('registration');
+        }
+
+        if (filled($speaker['name'] ?? null)) {
+            $eventSchema['performer'] = ['@type' => 'Person', 'name' => $speaker['name']];
+        }
+
+        if ($endsAt) {
+            $eventSchema['endDate'] = $endsAt->copy()->setTimezone('Asia/Jakarta')->toIso8601String();
+        }
+    @endphp
+    <script type="application/ld+json">{!! json_encode($eventSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+@endpush
+
 @section('content')
     {{-- ============ HERO ============ --}}
     <header class="r-hero r-hero--home">
         @include('partials.retina.nav', ['showCta' => $isRegistrationOpen])
 
-        <div id="konten" class="r-container r-hero__grid">
-            <div class="r-hero__copy">
-                <h1 class="r-hero__title r-rise r-d1">RETINA <span>{{ $startsAt->year }}</span></h1>
-                <p class="r-hero__theme r-rise r-d2">{{ config('retina.theme') }}</p>
-                <p class="r-hero__lead r-rise r-d2">Satu hari berlatih bicara di depan publik untuk insan kesehatan, dari menyusun pesan yang jernih sampai berdiri tenang di depan audiens.</p>
+        <div id="konten" class="r-container r-hero__stage">
+            <h1 class="r-sr-only">RETINA {{ $startsAt->year }}: {{ config('retina.theme') }}</h1>
 
-                <dl class="r-hero__facts r-rise r-d3">
-                    <div><dt>Tanggal</dt><dd>{{ $dateLabel }}<span>{{ $timeLabel }}</span></dd></div>
-                    <div><dt>Tempat</dt><dd>{{ config('retina.venue.room') }}<span>{{ config('retina.venue.building') }}, UKWMS</span></dd></div>
-                    <div><dt>Biaya</dt><dd>{{ $fee }}@if (filled(config('retina.perks')))<span>{{ config('retina.perks') }}</span>@endif</dd></div>
-                </dl>
+            <figure class="r-hero__banner r-rise r-d1">
+                <img src="{{ asset($banner['file']) }}" alt="{{ $banner['alt'] }}" width="1280" height="720" fetchpriority="high">
+            </figure>
 
-                <div class="r-hero__actions r-rise r-d4">
+            <div class="r-hero__strip r-rise r-d2">
+                <div>
+                    <p class="r-hero__when">{{ $dateLabel }} · {{ $timeLabel }}</p>
+                    <p class="r-hero__fee">{{ config('retina.venue.room') }} · {{ $fee }}@if (filled(config('retina.perks'))), {{ Str::lcfirst(config('retina.perks')) }}@endif</p>
+                </div>
+
+                <div class="r-hero__actions">
                     @if ($isRegistrationOpen)
-                        <a class="r-btn r-btn--brick r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
                         <p class="r-hero__status">
                             @if ($remainingQuota !== null)
                                 Pendaftaran dibuka · Sisa {{ $remainingQuota }} kursi
@@ -47,16 +103,12 @@
                                 Pendaftaran dibuka · Kuota terbatas
                             @endif
                         </p>
+                        <a class="r-btn r-btn--yellow r-btn--lg" href="{{ route('registration') }}">Amankan kursimu <span class="r-arrow" aria-hidden="true">→</span></a>
                     @else
                         <p class="r-hero__status r-hero__status--closed">Pendaftaran ditutup</p>
                     @endif
                 </div>
             </div>
-
-            <figure class="r-hero__media r-rise r-d3">
-                <img src="{{ asset($heroImage['file']) }}" alt="{{ $heroImage['alt'] }}" width="1000" height="1000" fetchpriority="high">
-                <figcaption>{{ $heroImage['caption'] }}</figcaption>
-            </figure>
         </div>
     </header>
 
@@ -81,19 +133,16 @@
 
             {{-- ============ PEMBICARA ============ --}}
             <div id="pembicara" class="r-container">
-                <div class="r-speaker {{ filled($speaker['photo']) ? 'r-speaker--photo' : '' }}" data-reveal>
-                    @if (filled($speaker['photo']))
-                        <figure class="r-speaker__media">
-                            <img src="{{ Storage::disk('public')->url($speaker['photo']) }}" alt="Foto {{ $speaker['name'] }}" width="600" height="750" loading="lazy">
+                <div class="r-speaker {{ $speakerPhotoUrl ? 'r-speaker--photo' : '' }}" data-reveal>
+                    @if ($speakerPhotoUrl)
+                        <figure class="r-speaker__media" data-reveal style="--reveal-delay: 90ms">
+                            <img src="{{ $speakerPhotoUrl }}" alt="Foto {{ $speaker['name'] }}" width="600" height="750" loading="lazy">
                         </figure>
                     @endif
 
-                    <div class="r-speaker__body">
-                        <p class="r-speaker__label">Dipandu oleh</p>
+                    <div class="r-speaker__body" data-reveal data-stagger>
                         <h2 class="r-speaker__name">{{ $speaker['name'] }}</h2>
-                        @if (filled($speaker['role']))
-                            <p class="r-speaker__role">{{ $speaker['role'] }}</p>
-                        @endif
+                        <p class="r-speaker__role">{{ filled($speaker['role']) ? $speaker['role'] : 'Guest speaker '.config('retina.name') }}</p>
                         @if (filled($speaker['bio']))
                             <p class="r-speaker__bio">{{ $speaker['bio'] }}</p>
                         @endif
@@ -141,7 +190,7 @@
                             <input id="ticket-name" class="r-input" type="text" maxlength="60" autocomplete="name" placeholder="Nama lengkap" data-ticket-name>
                             @include('partials.retina.ticket', ['startsAt' => $startsAt, 'showHolder' => true])
                             @if ($isRegistrationOpen)
-                                <a class="r-btn r-btn--brick" href="{{ route('registration') }}" data-ticket-link>Daftar dengan nama ini <span class="r-arrow" aria-hidden="true">→</span></a>
+                                <a class="r-btn r-btn--blue" href="{{ route('registration') }}" data-ticket-link>Daftar dengan nama ini <span class="r-arrow" aria-hidden="true">→</span></a>
                             @endif
                         </div>
                     </div>
@@ -162,9 +211,14 @@
                     </dl>
 
                     <div class="r-venue__links">
-                        <a class="r-btn r-btn--brick" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
+                        <a class="r-btn r-btn--blue" href="{{ $mapsUrl }}" target="_blank" rel="noopener">Buka di Google Maps <span class="r-arrow" aria-hidden="true">↗</span></a>
                         <a class="r-btn r-btn--soft" href="{{ $calendarUrl }}" target="_blank" rel="noopener">Tambah ke Google Calendar</a>
                     </div>
+
+                    <figure class="r-venue__photo">
+                        <img src="{{ asset($venueImage['file']) }}" alt="{{ $venueImage['alt'] }}" width="1000" height="1000" loading="lazy">
+                        <figcaption>{{ $venueImage['caption'] }}</figcaption>
+                    </figure>
                 </div>
 
                 <div class="r-map" data-reveal style="--reveal-delay: 90ms">
@@ -178,7 +232,7 @@
         </section>
 
         {{-- ============ FAQ ============ --}}
-        <section id="faq" class="r-section r-section--tint" aria-labelledby="faq-title">
+        <section id="faq" class="r-section r-section--sun" aria-labelledby="faq-title">
             <div class="r-container r-split">
                 <div class="r-split__head" data-reveal>
                     <h2 id="faq-title" class="r-h2">Sebelum kamu daftar.</h2>
@@ -219,8 +273,8 @@
             <div class="r-container r-cta__inner" data-reveal>
                 @if ($isRegistrationOpen)
                     <div>
-                        <h2>Kursi terbatas. Panggungnya menunggu.</h2>
-                        <p>{{ $dateLabel }} · {{ config('retina.venue.room') }} · {{ $fee }}</p>
+                        <h2>Kursi terbatas.</h2>
+                        <p>Panggungnya menunggu. {{ $dateLabel }} · {{ config('retina.venue.room') }} · {{ $fee }}</p>
                     </div>
                     <a class="r-btn r-btn--yellow r-btn--lg" href="{{ route('registration') }}">Daftar sekarang <span class="r-arrow" aria-hidden="true">→</span></a>
                 @else
@@ -236,6 +290,6 @@
 
 @section('credits')
     <p class="r-footer__credits">
-        Foto: {{ $heroImage['caption'] }}, sumber <a href="{{ $heroImage['source'] }}" target="_blank" rel="noopener">{{ $heroImage['credit'] }}</a>.
+        Foto: {{ $venueImage['caption'] }}, sumber <a href="{{ $venueImage['source'] }}" target="_blank" rel="noopener">{{ $venueImage['credit'] }}</a>.
     </p>
 @endsection

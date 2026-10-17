@@ -6,6 +6,7 @@ use App\Models\Participant;
 use App\Models\Setting;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class LandingPageTest extends TestCase
@@ -77,7 +78,10 @@ class LandingPageTest extends TestCase
 
     public function test_optional_speaker_details_render_only_when_configured(): void
     {
-        $this->get(route('home'))->assertDontSee('r-speaker__role', false);
+        $this->get(route('home'))
+            ->assertSee('Guest speaker RETINA 2026')
+            ->assertDontSee('r-speaker__bio', false)
+            ->assertDontSee('Dipandu oleh');
 
         config([
             'retina.speaker.role' => 'Pelatih komunikasi klinis',
@@ -89,6 +93,31 @@ class LandingPageTest extends TestCase
             ->assertSee('Berpengalaman melatih tenaga kesehatan.');
     }
 
+    public function test_speaker_photo_falls_back_to_the_banner_crop(): void
+    {
+        $this->assertFileExists(public_path(config('retina.speaker.photo_default')));
+
+        $this->get(route('home'))
+            ->assertSee('r-speaker--photo', false)
+            ->assertSee('src="'.asset(config('retina.speaker.photo_default')).'"', false);
+    }
+
+    public function test_uploaded_speaker_photo_takes_precedence_over_the_default(): void
+    {
+        config(['retina.speaker.photo' => 'landing/speaker.jpg']);
+
+        $this->get(route('home'))
+            ->assertSee('src="'.Storage::disk('public')->url('landing/speaker.jpg').'"', false)
+            ->assertDontSee(config('retina.speaker.photo_default'), false);
+    }
+
+    public function test_speaker_section_has_no_photo_without_upload_or_default(): void
+    {
+        config(['retina.speaker.photo_default' => null]);
+
+        $this->get(route('home'))->assertDontSee('r-speaker--photo', false);
+    }
+
     public function test_contact_link_renders_only_when_configured(): void
     {
         $this->get(route('home'))->assertDontSee('wa.me', false);
@@ -98,15 +127,58 @@ class LandingPageTest extends TestCase
         $this->get(route('home'))->assertSee('https://wa.me/6281234567890', false);
     }
 
-    public function test_hero_shows_the_campus_photo_with_its_source_credit(): void
+    public function test_hero_shows_the_event_banner(): void
     {
-        $image = config('retina.hero_image');
+        $banner = config('retina.banner');
+
+        $this->assertFileExists(public_path($banner['file']));
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('<h1 class="r-sr-only">RETINA 2026', false)
+            ->assertSee('src="'.asset($banner['file']).'"', false)
+            ->assertSee($banner['alt']);
+    }
+
+    public function test_hero_strip_shows_the_registration_call_to_action_while_open(): void
+    {
+        $this->get(route('home'))
+            ->assertSeeInOrder([
+                'r-hero__strip',
+                'Sabtu, 31 Oktober 2026 · 09.00 WIB',
+                'Pendaftaran dibuka',
+                'href="'.route('registration').'">Amankan kursimu',
+            ], false);
+    }
+
+    public function test_hero_strip_shows_a_closed_message_once_registration_closes(): void
+    {
+        Setting::putValue(Participant::SETTING_CLOSING_AT, '2026-10-13 23:59:00');
+
+        $this->get(route('home'))
+            ->assertSeeInOrder(['r-hero__strip', 'r-hero__status--closed', 'Pendaftaran ditutup'], false)
+            ->assertDontSee('Amankan kursimu');
+    }
+
+    public function test_social_preview_uses_the_banner(): void
+    {
+        $bannerUrl = asset(config('retina.banner.file'));
+
+        $this->get(route('home'))
+            ->assertSee('<meta property="og:image" content="'.$bannerUrl.'">', false)
+            ->assertSee('<meta name="twitter:image" content="'.$bannerUrl.'">', false)
+            ->assertSee('"image":["'.$bannerUrl.'"]', false);
+    }
+
+    public function test_location_section_shows_the_campus_photo_with_its_source_credit(): void
+    {
+        $image = config('retina.venue_image');
 
         $this->assertFileExists(public_path($image['file']));
 
         $this->get(route('home'))
             ->assertOk()
-            ->assertSee(asset($image['file']), false)
+            ->assertSeeInOrder(['id="lokasi"', asset($image['file'])], false)
             ->assertSee($image['alt'])
             ->assertSee($image['credit'])
             ->assertSee($image['source'], false);
@@ -128,5 +200,33 @@ class LandingPageTest extends TestCase
             ->assertSee('data-ticket-name', false)
             ->assertDontSee('data-ticket-link', false)
             ->assertSee('Pendaftaran ditutup.');
+    }
+
+    public function test_landing_page_has_ukwms_logo_and_seo_metadata(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('images/retina/logo-ukwms.png', false)
+            ->assertSee('<link rel="canonical" href="'.route('home').'">', false)
+            ->assertSee('property="og:image"', false)
+            ->assertSee('favicon-32x32.png', false)
+            ->assertSee('application/ld+json', false)
+            ->assertSee('"@type":"Event"', false);
+    }
+
+    public function test_registration_page_is_not_given_event_structured_data(): void
+    {
+        $this->get(route('registration'))
+            ->assertOk()
+            ->assertDontSee('application/ld+json', false);
+    }
+
+    public function test_sitemap_lists_public_pages(): void
+    {
+        $this->get(route('sitemap'))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/xml')
+            ->assertSee('<loc>'.route('home').'</loc>', false)
+            ->assertSee('<loc>'.route('registration').'</loc>', false);
     }
 }

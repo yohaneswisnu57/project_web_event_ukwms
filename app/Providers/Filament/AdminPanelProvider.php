@@ -26,6 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->spa()
             ->brandName('RETINA 2026')
+            ->favicon(asset('favicon-32x32.png'))
             ->id('admin')
             ->path('admin')
             ->profile()

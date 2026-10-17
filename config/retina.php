@@ -44,6 +44,9 @@ return [
         'role' => null,
         'bio' => null,
         'photo' => null,
+        // Dipakai selama admin belum mengunggah foto: potongan dari banner resmi.
+        // Ganti atau kosongkan jika pembicaranya berubah.
+        'photo_default' => 'images/retina/speaker-henry.webp',
     ],
 
     'sessions' => [
@@ -75,11 +78,27 @@ return [
     ],
 
     /*
-    | Foto pembuka halaman depan: gedung Kampus Pakuwon City, tempat acara
-    | berlangsung. Foto resmi dari situs UKWMS, dipotong persegi; sumbernya
-    | dicantumkan di footer.
+    | Link undangan grup WhatsApp peserta, hanya dikirim di email tiket.
+    | Disimpan di .env karena repositori ini publik; kosongkan untuk
+    | menyembunyikan tombolnya.
     */
-    'hero_image' => [
+    'whatsapp_group_url' => env('RETINA_WHATSAPP_GROUP_URL'),
+
+    /*
+    | Banner resmi acara: dipasang utuh sebagai hero halaman depan dan dipakai
+    | sebagai gambar pratinjau saat tautan dibagikan. Ganti file-nya untuk
+    | memperbarui banner; teks alternatif harus ikut menyebutkan isinya.
+    */
+    'banner' => [
+        'file' => 'images/retina/banner-retina-2026.webp',
+        'alt' => 'Poster RETINA 2026: Sabtu, 31 Oktober, 09.00 WIB, Ruang Teater Barat UKWMS Kampus Pakuwon City, guest speaker Henry Christian Tjandra, didukung Bank Mandiri dan EGC',
+    ],
+
+    /*
+    | Foto gedung Kampus Pakuwon City, tempat acara berlangsung, di bagian
+    | lokasi. Foto resmi dari situs UKWMS; sumbernya dicantumkan di footer.
+    */
+    'venue_image' => [
         'file' => 'images/retina/kampus-pakuwon-city.webp',
         'alt' => 'Gedung Kampus Pakuwon City Universitas Katolik Widya Mandala Surabaya dengan papan nama universitas dan taman di depannya',
         'caption' => 'Kampus Pakuwon City, Universitas Katolik Widya Mandala Surabaya',

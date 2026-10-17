@@ -2,6 +2,7 @@
     <div class="r-container">
         <div class="r-footer__row">
             <div class="r-footer__brand">
+                <img class="r-footer__logo" src="{{ asset('images/retina/logo-ukwms.png') }}" alt="Logo Universitas Katolik Widya Mandala Surabaya" width="51" height="60" loading="lazy">
                 <strong>{{ config('retina.name') }}</strong>
                 <p>{{ config('retina.tagline') }} · {{ config('retina.venue.campus') }}</p>
             </div>

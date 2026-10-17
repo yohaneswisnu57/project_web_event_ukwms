@@ -23,6 +23,14 @@ Simpan **QR Code** di bawah ini dan tunjukkan kepada panitia saat registrasi ula
 - **Lokasi:** Ruang Teater Barat, Tower Barat Lt. 1, Universitas Katolik Widya Mandala Surabaya, Jl. Kalisari Selatan 1
 </x-mail::panel>
 
+@if (filled(config('retina.whatsapp_group_url')))
+Untuk informasi dan pembaruan terbaru seputar acara, silakan bergabung ke grup WhatsApp peserta:
+
+<x-mail::button :url="config('retina.whatsapp_group_url')" color="success">
+Gabung Grup WhatsApp
+</x-mail::button>
+@endif
+
 So, are you ready to **SPEAK UP, STAND OUT, and MAKE AN IMPACT?**
 
 Sampai jumpa,<br>

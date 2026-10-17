@@ -39,7 +39,7 @@
     <div class="r-perforation" aria-hidden="true"></div>
 
     <div class="r-ticket__bottom">
-        <p class="r-ticket__label">Tirai dibuka dalam</p>
+        <p class="r-ticket__label">Acara dimulai</p>
         <div class="r-countdown" data-countdown="{{ $startsAt->toIso8601String() }}" role="timer" aria-label="Waktu menuju acara">
             @foreach ($units as $unit => $label)
                 <div class="r-countdown__cell">

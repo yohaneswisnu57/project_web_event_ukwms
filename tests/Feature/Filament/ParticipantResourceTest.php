@@ -159,6 +159,22 @@ class ParticipantResourceTest extends TestCase
             ->assertSeeInHtml('Ruang Teater Barat');
     }
 
+    public function test_verified_email_links_the_participant_whatsapp_group_when_configured(): void
+    {
+        $participant = Participant::factory()->verified()->create();
+
+        config(['retina.whatsapp_group_url' => 'https://chat.whatsapp.com/contoh']);
+
+        (new ParticipantVerifiedMail($participant))
+            ->assertSeeInHtml('Gabung Grup WhatsApp')
+            ->assertSeeInHtml('https://chat.whatsapp.com/contoh', false);
+
+        config(['retina.whatsapp_group_url' => null]);
+
+        (new ParticipantVerifiedMail($participant))
+            ->assertDontSeeInHtml('Gabung Grup WhatsApp');
+    }
+
     public function test_admin_can_resend_ticket_to_verified_participant(): void
     {
         Mail::fake();
