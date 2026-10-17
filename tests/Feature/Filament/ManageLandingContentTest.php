@@ -85,7 +85,7 @@ class ManageLandingContentTest extends TestCase
             ->assertSee('Menutup dengan berkesan')
             ->assertDontSee('Menyusun pesan')
             ->assertSee('09.00–12.30 WIB')
-            ->assertSee('Termasuk sertifikat')
+            ->assertSee('termasuk sertifikat')
             ->assertSee('https://wa.me/6281298765432', false)
             ->assertSee('Narahubung: Kak Rina');
     }
@@ -166,7 +166,7 @@ class ManageLandingContentTest extends TestCase
             ->assertSee('alt="Foto Henry Christian Tjandra"', false);
     }
 
-    public function test_removing_the_photo_deletes_it_and_falls_back_to_initials(): void
+    public function test_removing_the_photo_deletes_it_and_falls_back_to_the_default_photo(): void
     {
         Livewire::test(ManageLandingContent::class)
             ->fillForm($this->validContent(['speaker_photo' => UploadedFile::fake()->image('henry.jpg', 400, 500)]))
@@ -183,8 +183,8 @@ class ManageLandingContentTest extends TestCase
         Storage::disk(ManageLandingContent::PHOTO_DISK)->assertMissing($photo);
 
         $this->get(route('home'))
-            ->assertDontSee('alt="Foto Henry Christian Tjandra"', false)
-            ->assertDontSee('r-speaker__media', false);
+            ->assertDontSee(Storage::disk(ManageLandingContent::PHOTO_DISK)->url($photo), false)
+            ->assertSee('src="'.asset(config('retina.speaker.photo_default')).'"', false);
     }
 
     public function test_landing_page_uses_config_defaults_until_content_is_saved(): void
