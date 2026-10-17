@@ -7,7 +7,6 @@ use App\Filament\Resources\Participants\Actions\CheckInParticipantAction;
 use App\Filament\Resources\Participants\Actions\RejectParticipantAction;
 use App\Filament\Resources\Participants\Actions\ResendTicketAction;
 use App\Filament\Resources\Participants\Actions\ResetCheckInAction;
-use App\Filament\Resources\Participants\Actions\ToggleGoodieBagAction;
 use App\Filament\Resources\Participants\ParticipantResource;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
@@ -25,7 +24,6 @@ class ViewParticipant extends ViewRecord
             CheckInParticipantAction::make(),
             EditAction::make(),
             ActionGroup::make([
-                ToggleGoodieBagAction::make(),
                 ResendTicketAction::make(),
                 ResetCheckInAction::make(),
             ]),

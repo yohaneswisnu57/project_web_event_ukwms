@@ -47,7 +47,6 @@ class Participant extends Model
         'reviewed_at',
         'reviewed_by',
         'checked_in_at',
-        'goodie_bag_received_at',
     ];
 
     protected $attributes = [
@@ -65,7 +64,6 @@ class Participant extends Model
             'cohort_year' => 'integer',
             'reviewed_at' => 'datetime',
             'checked_in_at' => 'datetime',
-            'goodie_bag_received_at' => 'datetime',
         ];
     }
 

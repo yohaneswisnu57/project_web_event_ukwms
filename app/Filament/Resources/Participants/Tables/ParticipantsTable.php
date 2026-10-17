@@ -10,7 +10,6 @@ use App\Filament\Resources\Participants\Actions\CheckInParticipantAction;
 use App\Filament\Resources\Participants\Actions\RejectParticipantAction;
 use App\Filament\Resources\Participants\Actions\ResendTicketAction;
 use App\Filament\Resources\Participants\Actions\ResetCheckInAction;
-use App\Filament\Resources\Participants\Actions\ToggleGoodieBagAction;
 use App\Models\Participant;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -19,7 +18,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -83,12 +81,6 @@ class ParticipantsTable
                     ->sortable()
                     ->toggleable(),
 
-                IconColumn::make('goodie_bag_received_at')
-                    ->label('Goodie Bag')
-                    ->boolean(fn ($state): bool => filled($state))
-                    ->default(false)
-                    ->toggleable(isToggledHiddenByDefault: true),
-
                 TextColumn::make('created_at')
                     ->label('Tanggal Daftar')
                     ->dateTime('d M Y H:i')
@@ -131,7 +123,6 @@ class ParticipantsTable
                     ViewAction::make(),
                     EditAction::make(),
                     CheckInParticipantAction::make(),
-                    ToggleGoodieBagAction::make(),
                     ResendTicketAction::make(),
                     ResetCheckInAction::make(),
                 ]),

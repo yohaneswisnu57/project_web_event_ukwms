@@ -190,21 +190,6 @@ class ParticipantResourceTest extends TestCase
         $this->assertNull($verified->refresh()->checked_in_at);
     }
 
-    public function test_admin_can_toggle_goodie_bag_handover(): void
-    {
-        $participant = Participant::factory()->verified()->create();
-
-        Livewire::test(ListParticipants::class)
-            ->callAction(TestAction::make('toggleGoodieBag')->table($participant));
-
-        $this->assertNotNull($participant->refresh()->goodie_bag_received_at);
-
-        Livewire::test(ListParticipants::class)
-            ->callAction(TestAction::make('toggleGoodieBag')->table($participant));
-
-        $this->assertNull($participant->refresh()->goodie_bag_received_at);
-    }
-
     public function test_registration_settings_can_be_saved_and_cleared(): void
     {
         Livewire::test(ListParticipants::class)

@@ -45,9 +45,6 @@ class ParticipantExporter extends Exporter
                 ->label('Waktu Verifikasi'),
             ExportColumn::make('checked_in_at')
                 ->label('Waktu Check-in'),
-            ExportColumn::make('goodie_bag_received_at')
-                ->label('Goodie Bag')
-                ->state(fn (Participant $record): string => filled($record->goodie_bag_received_at) ? 'Sudah' : 'Belum'),
             ExportColumn::make('created_at')
                 ->label('Tanggal Daftar'),
         ];

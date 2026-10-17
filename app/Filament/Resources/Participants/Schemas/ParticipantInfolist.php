@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Participants\Schemas;
 use App\Enums\ParticipantOrigin;
 use App\Enums\ParticipantStatus;
 use App\Models\Participant;
-use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
@@ -97,10 +96,6 @@ class ParticipantInfolist
                             ->label('Waktu Check-in')
                             ->dateTime('d M Y H:i')
                             ->placeholder('Belum hadir'),
-                        IconEntry::make('goodie_bag_received_at')
-                            ->label('Goodie Bag Diterima')
-                            ->boolean(fn ($state): bool => filled($state))
-                            ->default(false),
                         TextEntry::make('created_at')
                             ->label('Tanggal Daftar')
                             ->dateTime('d M Y H:i'),
