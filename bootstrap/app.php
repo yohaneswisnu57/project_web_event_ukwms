@@ -18,7 +18,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->create();
 
-if (env('APP_ENV') === 'testing') {
+if (in_array(env('APP_ENV'), ['testing', 'e2e'], true)) {
     $app->useStoragePath(realpath(__DIR__.'/../storage_test'));
 }
 

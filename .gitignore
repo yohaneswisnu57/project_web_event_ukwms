@@ -29,3 +29,17 @@ __pycache__/
 *.pyc
 *.old
 *.old2
+
+# Playwright
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+
+# Konfigurasi lokal e2e (berisi APP_KEY); salin dari .env.e2e.example
+.env.e2e
+
+# Skill desain pihak ketiga, hanya dipakai lokal
+/.claude/skills/design-taste-frontend/
+/.claude/skills/high-end-visual-design/
+/.claude/skills/redesign-existing-projects/
